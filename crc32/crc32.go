@@ -8,13 +8,10 @@ const (
 	Polynomial int64 = 0xedb88320
 
 	MaxSlice16    = 16
-	MaxSlice8     = 8
-	MaxSlice4     = 4
-	MaxSlice1     = 1
 	MaxSliceNoLut = 0
 )
 
-func Crc32Bitwise(data []byte, prevCrc32 uint32) uint32 {
+func Bitwise(data []byte, prevCrc32 uint32) uint32 {
 	var crc = prevCrc32 ^ 0xffffffff
 	for _, c := range data {
 		crc ^= uint32(c)
@@ -25,7 +22,7 @@ func Crc32Bitwise(data []byte, prevCrc32 uint32) uint32 {
 	return crc ^ 0xffffffff
 }
 
-func Crc32Halfbyte(data []byte, prevCrc32 uint32) uint32 {
+func Halfbyte(data []byte, prevCrc32 uint32) uint32 {
 	var crc = prevCrc32 ^ 0xffffffff
 	for _, c := range data {
 		crc = Lookup16[(crc^uint32(c))&0x0f] ^ (crc >> 4)
@@ -34,7 +31,7 @@ func Crc32Halfbyte(data []byte, prevCrc32 uint32) uint32 {
 	return crc ^ 0xffffffff
 }
 
-func Crc32Byte1(data []byte, prevCrc32 uint32) uint32 {
+func Byte1(data []byte, prevCrc32 uint32) uint32 {
 	var crc = prevCrc32 ^ 0xffffffff
 	for _, c := range data {
 		crc = (crc >> 8) ^ Lookup[MaxSliceNoLut][(crc&0xff)^uint32(c)]
@@ -42,7 +39,7 @@ func Crc32Byte1(data []byte, prevCrc32 uint32) uint32 {
 	return crc ^ 0xffffffff
 }
 
-func Crc32Byte1Tableless(data []byte, prevCrc32 uint32) uint32 {
+func Byte1Tableless(data []byte, prevCrc32 uint32) uint32 {
 	var crc = prevCrc32 ^ 0xffffffff
 	for _, c := range data {
 		s := uint8(crc) ^ uint8(c)
@@ -60,7 +57,7 @@ func Crc32Byte1Tableless(data []byte, prevCrc32 uint32) uint32 {
 	return crc ^ 0xffffffff
 }
 
-func Crc32Bytes4(data []byte, prevCrc32 uint32) uint32 {
+func Bytes4(data []byte, prevCrc32 uint32) uint32 {
 	var crc = prevCrc32 ^ 0xffffffff
 	for len(data) >= 4 {
 		one := binary.LittleEndian.Uint32(data[:4]) ^ uint32(crc)
@@ -76,7 +73,7 @@ func Crc32Bytes4(data []byte, prevCrc32 uint32) uint32 {
 	return crc ^ 0xffffffff
 }
 
-func Crc32Bytes8(data []byte, prevCrc32 uint32) uint32 {
+func Bytes8(data []byte, prevCrc32 uint32) uint32 {
 	var crc = prevCrc32 ^ 0xffffffff
 	for len(data) >= 8 {
 		one := binary.LittleEndian.Uint32(data[:4]) ^ crc
@@ -97,7 +94,7 @@ func Crc32Bytes8(data []byte, prevCrc32 uint32) uint32 {
 	return crc ^ 0xffffffff
 }
 
-func Crc32Bytes4x8(data []byte, prevCrc32 uint32) uint32 {
+func Bytes4x8(data []byte, prevCrc32 uint32) uint32 {
 	var crc = prevCrc32 ^ 0xffffffff
 
 	unroll := 4
@@ -124,7 +121,7 @@ func Crc32Bytes4x8(data []byte, prevCrc32 uint32) uint32 {
 	return crc ^ 0xffffffff
 }
 
-func Crc32Bytes16(data []byte, prevCrc32 uint32) uint32 {
+func Bytes16(data []byte, prevCrc32 uint32) uint32 {
 	var crc = prevCrc32 ^ 0xffffffff
 
 	unroll := 4
