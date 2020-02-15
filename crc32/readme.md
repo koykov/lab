@@ -1,4 +1,4 @@
-#crc32
+# crc32
 
 A collection of crc32 algorithms for Go language.
 
