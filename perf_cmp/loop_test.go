@@ -24,8 +24,7 @@ func BenchmarkGoto(b *testing.B) {
 		x, y = math.Pi, 0.385
 	loop:
 		_ = x * y
-		j++
-		if j < 1e6 {
+		if j++; j < 1e6 {
 			goto loop
 		}
 	}
