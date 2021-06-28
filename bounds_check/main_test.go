@@ -22,7 +22,6 @@ func BenchmarkLoopBoundsCheckOn(b *testing.B) {
 			x += a[j]
 		}
 	}
-	b.Log(x)
 }
 
 func BenchmarkLoopBoundsCheckOff(b *testing.B) {
@@ -34,5 +33,4 @@ func BenchmarkLoopBoundsCheckOff(b *testing.B) {
 			x += a[j]
 		}
 	}
-	b.Log(x)
 }
