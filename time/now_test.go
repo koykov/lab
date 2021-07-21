@@ -29,9 +29,27 @@ func BenchmarkTimeNowNative(b *testing.B) {
 	}
 }
 
+func BenchmarkTimeNowNativeParallel(b *testing.B) {
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			x := time.Now()
+			_ = x
+		}
+	})
+}
+
 func BenchmarkTimeNowAtomic(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		x := atomic.LoadUint32(&now)
 		_ = x
 	}
+}
+
+func BenchmarkTimeNowAtomicParallel(b *testing.B) {
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			x := atomic.LoadUint32(&now)
+			_ = x
+		}
+	})
 }
