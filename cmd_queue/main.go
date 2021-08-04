@@ -35,14 +35,13 @@ func main() {
 		go func() {
 			defer wg.Done()
 			for {
-				idx, ok := <-queue
-				if !ok {
-					break
+				if idx, ok := <-queue; ok {
+					time.Sleep(time.Duration(200+rand.Int31n(200)) * time.Millisecond)
+					processed := atomic.AddUint32(&proc, 1)
+					fmt.Println(processed, idx)
+					continue
 				}
-
-				time.Sleep(time.Duration(200+rand.Int31n(200)) * time.Millisecond)
-				processed := atomic.AddUint32(&proc, 1)
-				fmt.Println(processed, idx)
+				break
 			}
 		}()
 	}
