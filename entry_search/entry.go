@@ -84,6 +84,6 @@ func searchCustom(a []entry) uint32 {
 }
 
 func searchNative(a []entry) uint32 {
-	z := sort.Search(len(a), func(i int) bool { return n == a[i].expire })
+	z := sort.Search(len(a), func(i int) bool { return n <= a[i].expire })
 	return uint32(z)
 }
