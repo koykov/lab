@@ -2,14 +2,16 @@ package main
 
 import (
 	"testing"
-	"unsafe"
 
+	"github.com/koykov/fastconv"
 	"github.com/koykov/hash/fnv"
+	"github.com/minio/highwayhash"
 )
 
 var (
-	mapKS = map[string]int{}
-	mapKH = map[uint64]int{}
+	mapKS  = map[string]int{}
+	mapKH  = map[uint64]int{}
+	mapKHW = map[uint64]int{}
 
 	keyPool = []string{
 		"27bf0ea8-a3c9-49bb-b55d-3305642955fe",
@@ -31,13 +33,17 @@ var (
 		"6bf30828-57cb-4c9d-a8b8-07ab362114ed",
 		"764bdcb6-27aa-4f1a-9149-8223cc2f4127",
 	}
+	testKey = []byte("67093d89-864d-4723-b3a9-1b1b162321bd")
 )
 
 func init() {
+	var kb [32]byte
 	for i := 0; i < len(keyPool); i++ {
 		key := keyPool[i]
 		mapKS[key] = i
 		mapKH[fnv.Hash64String(key)] = i
+		hw := highwayhash.Sum64(fastconv.S2B(key), kb[:])
+		mapKHW[hw] = i
 	}
 }
 
@@ -50,14 +56,13 @@ func BenchmarkKeyStr(b *testing.B) {
 	}
 }
 
-func BenchmarkKeyHashStr(b *testing.B) {
+func BenchmarkKeyHashW(b *testing.B) {
+	var key [32]byte
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		key := "67093d89-864d-4723-b3a9-1b1b162321bd"
-		hptr := hashstr(uintptr(unsafe.Pointer(&key)))
-		h := *(*uint64)(unsafe.Pointer(hptr))
-		if j := mapKH[h]; j != 2 {
-			b.Error("key index mismatch")
+		h := highwayhash.Sum64(testKey, key[:])
+		if j := mapKHW[h]; j != 2 {
+			b.Log("key index mismatch")
 		}
 	}
 }
