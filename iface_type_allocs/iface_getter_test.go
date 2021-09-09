@@ -6,7 +6,11 @@ import (
 )
 
 type T struct {
-	kv map[string]string
+	kv   map[string]string
+	bufI int64
+	bufU uint64
+	bufF float64
+	bufS string
 }
 
 var (
@@ -42,6 +46,27 @@ func (t T) Get(key string, def interface{}) interface{} {
 	return val
 }
 
+func (t *T) GetBuf(key string, def interface{}) interface{} {
+	raw, ok := t.kv[key]
+	if !ok {
+		return def
+	}
+	switch def.(type) {
+	case int, int8, int16, int32, int64:
+		t.bufI, _ = strconv.ParseInt(raw, 10, 64)
+		return &t.bufI
+	case uint, uint8, uint16, uint32, uint64:
+		t.bufU, _ = strconv.ParseUint(raw, 10, 64)
+		return &t.bufU
+	case float32, float64:
+		t.bufF, _ = strconv.ParseFloat(raw, 64)
+		return &t.bufF
+	default:
+		t.bufS = raw
+		return &t.bufS
+	}
+}
+
 func (t T) GetInt(key string, def int) int {
 	raw, ok := t.kv[key]
 	if !ok {
@@ -75,6 +100,26 @@ func BenchmarkIfaceGetString(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		raw := x.Get("bar", "N/D")
 		if s, ok := raw.(string); !ok || s != "qwerty" {
+			b.Error("string mismatch")
+		}
+	}
+}
+
+func BenchmarkIfaceBufferedGetInt(b *testing.B) {
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		raw := x.GetBuf("foo", int32(0))
+		if n, ok := raw.(*int64); !ok || *n != 123456 {
+			b.Error("int mismatch")
+		}
+	}
+}
+
+func BenchmarkIfaceBufferedGetString(b *testing.B) {
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		raw := x.GetBuf("bar", "N/D")
+		if s, ok := raw.(*string); !ok || *s != "qwerty" {
 			b.Error("string mismatch")
 		}
 	}
