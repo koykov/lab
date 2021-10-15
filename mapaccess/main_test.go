@@ -7,8 +7,9 @@ type mapL2 map[int32]map[int32]struct{}
 type mapL3 map[int32]map[int32]map[int32]struct{}
 
 var (
-	l1 = mapL1{1: struct{}{}, 2: struct{}{}, 3: struct{}{}}
-	l2 = mapL2{
+	str = map[string]string{"foo": "bar"}
+	l1  = mapL1{1: struct{}{}, 2: struct{}{}, 3: struct{}{}}
+	l2  = mapL2{
 		1: {1: struct{}{}, 2: struct{}{}, 3: struct{}{}},
 		2: {1: struct{}{}, 2: struct{}{}, 3: struct{}{}},
 		3: {1: struct{}{}, 2: struct{}{}, 3: struct{}{}},
@@ -31,6 +32,15 @@ var (
 		},
 	}
 )
+
+func BenchmarkAccessStr(b *testing.B) {
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		if _, ok := str["foo"]; !ok {
+			b.Error("str: not found")
+		}
+	}
+}
 
 func BenchmarkAccessL1(b *testing.B) {
 	b.ReportAllocs()
