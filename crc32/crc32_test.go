@@ -15,234 +15,191 @@ var (
 	expectedLong  = uint32(0x1e4674d1)
 )
 
-func BenchmarkCrc32NativeSimple(b *testing.B) {
-	h := uint32(0xffffffff)
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		tab := crc32.MakeTable(0)
-		r := crc32.Checksum(dataShort, tab)
-		if h != r {
-			b.Error(h, "not equal to", r)
+func BenchmarkCrc32(b *testing.B) {
+	b.Run("native", func(b *testing.B) {
+		h := uint32(0xffffffff)
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			tab := crc32.MakeTable(0)
+			r := crc32.Checksum(dataShort, tab)
+			if h != r {
+				b.Error(h, "not equal to", r)
+			}
 		}
-	}
+	})
+	b.Run("nativeIEEE", func(b *testing.B) {
+		h := uint32(0x607650b0)
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			tab := crc32.MakeTable(crc32.IEEE)
+			r := crc32.Checksum(dataShort, tab)
+			if h != r {
+				b.Error(h, "not equal to", r)
+			}
+		}
+	})
+	b.Run("castagnoli", func(b *testing.B) {
+		h := uint32(0x9c498ba9)
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			tab := crc32.MakeTable(crc32.Castagnoli)
+			r := crc32.Checksum(dataShort, tab)
+			if h != r {
+				b.Error(h, "not equal to", r)
+			}
+		}
+	})
+	b.Run("bitwise", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bitwise(dataShort, 0)
+			if r != expectedShort {
+				b.Error(expectedShort, "not equal to", r)
+			}
+		}
+	})
+	b.Run("halfbyte", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Halfbyte(dataShort, 0)
+			if r != expectedShort {
+				b.Error(expectedShort, "not equal to", r)
+			}
+		}
+	})
+	b.Run("byte4", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bytes4(dataShort, 0)
+			if r != expectedShort {
+				b.Error(expectedShort, "not equal to", r)
+			}
+		}
+	})
+	b.Run("byte8", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bytes8(dataShort, 0)
+			if r != expectedShort {
+				b.Error(expectedShort, "not equal to", r)
+			}
+		}
+	})
+	b.Run("byte4x8", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bytes4x8(dataShort, 0)
+			if r != expectedShort {
+				b.Error(expectedShort, "not equal to", r)
+			}
+		}
+	})
+	b.Run("byte16", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bytes16(dataShort, 0)
+			if r != expectedShort {
+				b.Error(expectedShort, "not equal to", r)
+			}
+		}
+	})
 }
 
-func BenchmarkCrc32NativeSimpleLong(b *testing.B) {
-	h := uint32(0xffffffff)
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		tab := crc32.MakeTable(0)
-		r := crc32.Checksum(dataLong, tab)
-		if h != r {
-			b.Error(h, "not equal to", r)
+func BenchmarkCrc32Long(b *testing.B) {
+	b.Run("native", func(b *testing.B) {
+		h := uint32(0xffffffff)
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			tab := crc32.MakeTable(0)
+			r := crc32.Checksum(dataLong, tab)
+			if h != r {
+				b.Error(h, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32NativeIEEE(b *testing.B) {
-	h := uint32(0x607650b0)
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		tab := crc32.MakeTable(crc32.IEEE)
-		r := crc32.Checksum(dataShort, tab)
-		if h != r {
-			b.Error(h, "not equal to", r)
+	})
+	b.Run("nativeIEEE", func(b *testing.B) {
+		h := uint32(0x1e4674d1)
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			tab := crc32.MakeTable(crc32.IEEE)
+			r := crc32.Checksum(dataLong, tab)
+			if h != r {
+				b.Error(h, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32NativeIEEELong(b *testing.B) {
-	h := uint32(0x1e4674d1)
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		tab := crc32.MakeTable(crc32.IEEE)
-		r := crc32.Checksum(dataLong, tab)
-		if h != r {
-			b.Error(h, "not equal to", r)
+	})
+	b.Run("castagnoli", func(b *testing.B) {
+		h := uint32(0xa74275c5)
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			tab := crc32.MakeTable(crc32.Castagnoli)
+			r := crc32.Checksum(dataLong, tab)
+			if h != r {
+				b.Error(h, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32NativeCastagnoli(b *testing.B) {
-	h := uint32(0x9c498ba9)
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		tab := crc32.MakeTable(crc32.Castagnoli)
-		r := crc32.Checksum(dataShort, tab)
-		if h != r {
-			b.Error(h, "not equal to", r)
+	})
+	b.Run("bitwise", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bitwise(dataLong, 0)
+			if r != expectedLong {
+				b.Error(expectedLong, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32NativeCastagnoliLong(b *testing.B) {
-	h := uint32(0xa74275c5)
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		tab := crc32.MakeTable(crc32.Castagnoli)
-		r := crc32.Checksum(dataLong, tab)
-		if h != r {
-			b.Error(h, "not equal to", r)
+	})
+	b.Run("byte1", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Byte1(dataLong, 0)
+			if r != expectedLong {
+				b.Error(expectedLong, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32Bitwise(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bitwise(dataShort, 0)
-		if r != expectedShort {
-			b.Error(expectedShort, "not equal to", r)
+	})
+	b.Run("byte1Tableless", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Byte1Tableless(dataLong, 0)
+			if r != expectedLong {
+				b.Error(expectedLong, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32BitwiseLong(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bitwise(dataLong, 0)
-		if r != expectedLong {
-			b.Error(expectedLong, "not equal to", r)
+	})
+	b.Run("byte4", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bytes4(dataLong, 0)
+			if r != expectedLong {
+				b.Error(expectedLong, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32Halfbyte(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Halfbyte(dataShort, 0)
-		if r != expectedShort {
-			b.Error(expectedShort, "not equal to", r)
+	})
+	b.Run("byte8", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bytes8(dataLong, 0)
+			if r != expectedLong {
+				b.Error(expectedLong, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32HalfbyteLong(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Halfbyte(dataLong, 0)
-		if r != expectedLong {
-			b.Error(expectedLong, "not equal to", r)
+	})
+	b.Run("byte4x8", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bytes4x8(dataLong, 0)
+			if r != expectedLong {
+				b.Error(expectedLong, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32Byte1(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Byte1(dataShort, 0)
-		if r != expectedShort {
-			b.Error(expectedShort, "not equal to", r)
+	})
+	b.Run("byte16", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			r := Bytes16(dataLong, 0)
+			if r != expectedLong {
+				b.Error(expectedLong, "not equal to", r)
+			}
 		}
-	}
-}
-
-func BenchmarkCrc32Byte1Long(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Byte1(dataLong, 0)
-		if r != expectedLong {
-			b.Error(expectedLong, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Byte1Tableless(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Byte1Tableless(dataShort, 0)
-		if r != expectedShort {
-			b.Error(expectedShort, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Byte1TablelessLong(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Byte1Tableless(dataLong, 0)
-		if r != expectedLong {
-			b.Error(expectedLong, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Bytes4(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bytes4(dataShort, 0)
-		if r != expectedShort {
-			b.Error(expectedShort, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Bytes4Long(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bytes4(dataLong, 0)
-		if r != expectedLong {
-			b.Error(expectedLong, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Bytes8(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bytes8(dataShort, 0)
-		if r != expectedShort {
-			b.Error(expectedShort, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Bytes8Long(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bytes8(dataLong, 0)
-		if r != expectedLong {
-			b.Error(expectedLong, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Bytes4x8(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bytes4x8(dataShort, 0)
-		if r != expectedShort {
-			b.Error(expectedShort, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Bytes4x8Long(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bytes4x8(dataLong, 0)
-		if r != expectedLong {
-			b.Error(expectedLong, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Bytes16(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bytes16(dataShort, 0)
-		if r != expectedShort {
-			b.Error(expectedShort, "not equal to", r)
-		}
-	}
-}
-
-func BenchmarkCrc32Bytes16Long(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		r := Bytes16(dataLong, 0)
-		if r != expectedLong {
-			b.Error(expectedLong, "not equal to", r)
-		}
-	}
+	})
 }
