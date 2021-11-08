@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"time"
+
+	"github.com/koykov/policy"
 )
 
 var c rotateCache
@@ -15,6 +17,8 @@ func init() {
 		c.set(3, "asd")
 		c.rotate()
 	}
+	c.buf[0].lock.SetPolicy(policy.LockFree)
+	c.buf[1].lock.SetPolicy(policy.LockFree)
 }
 
 func main() {
@@ -44,7 +48,7 @@ func main() {
 	}()
 
 	t := time.NewTicker(time.Second)
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 5; i++ {
 		select {
 		case <-t.C:
 			c.resetBuf()
