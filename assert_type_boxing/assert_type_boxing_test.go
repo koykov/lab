@@ -1,4 +1,4 @@
-package main
+package assert_type_boxing
 
 import "testing"
 
