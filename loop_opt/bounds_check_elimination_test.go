@@ -1,4 +1,4 @@
-package bounds_check
+package loop_opt
 
 import "testing"
 

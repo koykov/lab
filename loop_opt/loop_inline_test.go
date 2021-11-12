@@ -1,11 +1,11 @@
-package loop_goto
+package loop_opt
 
 import "testing"
 
 func BenchmarkLoop(b *testing.B) {
 	a := 0
 	for i := 0; i < b.N; i++ {
-		a = floop(50)
+		a = floop(5)
 	}
 	_ = a
 }
@@ -13,7 +13,7 @@ func BenchmarkLoop(b *testing.B) {
 func BenchmarkGoto(b *testing.B) {
 	a := 0
 	for i := 0; i < b.N; i++ {
-		a = fgoto(50)
+		a = fgoto(5)
 	}
 	_ = a
 }
