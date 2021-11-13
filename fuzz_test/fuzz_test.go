@@ -10,6 +10,7 @@ const (
 
 type kdmReq struct {
 	envType int
+	page    string
 }
 
 func FuzzGetData(f *testing.F) {
@@ -21,6 +22,9 @@ func FuzzGetData(f *testing.F) {
 		}
 		if req == nil {
 			f.Skip()
+		}
+		if len(req.page) > 0 && req.envType != envTypeWeb {
+			f.Error("wrong envType", req.envType, "on page", req.page)
 		}
 	})
 }
@@ -35,11 +39,10 @@ func kdmHandler(rawQuery string) (*kdmReq, error) {
 		return nil, err
 	}
 
-	var page string
-	if page = query.Get("page"); len(page) == 0 {
-		page = query.Get("domain")
+	if req.page = query.Get("page"); len(page) == 0 {
+		req.page = query.Get("domain")
 	}
-	if len(page) == 0 {
+	if len(req.page) == 0 {
 		req.envType = envTypeUnknown
 	}
 
