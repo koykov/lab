@@ -1,6 +1,27 @@
 package entry_search
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
+
+var a = make([]entry, 0, entryLen)
+
+func init() {
+	now := uint32(time.Now().Unix())
+	var acc int
+	for i := 0; i < entryLen; i++ {
+		a = append(a, entry{expire: now})
+		if i == entryLenHalf {
+			n = now
+		}
+		acc++
+		if acc == 123456 {
+			now++
+			acc = 0
+		}
+	}
+}
 
 func TestSearchCustom(t *testing.T) {
 	x := searchCustom(a)

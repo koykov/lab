@@ -2,7 +2,6 @@ package entry_search
 
 import (
 	"sort"
-	"time"
 )
 
 const (
@@ -19,26 +18,7 @@ type entry struct {
 	aidptr *uint32
 }
 
-var (
-	a = make([]entry, 0, entryLen)
-	n uint32
-)
-
-func init() {
-	now := uint32(time.Now().Unix())
-	var acc int
-	for i := 0; i < entryLen; i++ {
-		a = append(a, entry{expire: now})
-		if i == entryLenHalf {
-			n = now
-		}
-		acc++
-		if acc == 123456 {
-			now++
-			acc = 0
-		}
-	}
-}
+var n uint32
 
 func searchCustom(a []entry) uint32 {
 	el := uint32(len(a))
