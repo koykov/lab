@@ -1,4 +1,4 @@
-package main
+package hmapaccess
 
 import (
 	"testing"
@@ -47,31 +47,31 @@ func init() {
 	}
 }
 
-func BenchmarkKeyStr(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		if j := mapKS["67093d89-864d-4723-b3a9-1b1b162321bd"]; j != 2 {
-			b.Error("key index mismatch")
+func BenchmarkHashmapAccess(b *testing.B) {
+	b.Run("key string", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			if j := mapKS["67093d89-864d-4723-b3a9-1b1b162321bd"]; j != 2 {
+				b.Error("key index mismatch")
+			}
 		}
-	}
-}
-
-func BenchmarkKeyHashW(b *testing.B) {
-	var key [32]byte
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		h := highwayhash.Sum64(testKey, key[:])
-		if j := mapKHW[h]; j != 2 {
-			b.Log("key index mismatch")
+	})
+	b.Run("highwayhash", func(b *testing.B) {
+		var key [32]byte
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			h := highwayhash.Sum64(testKey, key[:])
+			if j := mapKHW[h]; j != 2 {
+				b.Log("key index mismatch")
+			}
 		}
-	}
-}
-
-func BenchmarkKeyHash(b *testing.B) {
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		if j := mapKH[fnv.Hash64String("67093d89-864d-4723-b3a9-1b1b162321bd")]; j != 2 {
-			b.Error("key index mismatch")
+	})
+	b.Run("fnv64 custom", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			if j := mapKH[fnv.Hash64String("67093d89-864d-4723-b3a9-1b1b162321bd")]; j != 2 {
+				b.Error("key index mismatch")
+			}
 		}
-	}
+	})
 }
