@@ -30,7 +30,7 @@ void bench_atomic_part() {
     for (int i = 0; i < TN; i++) {
         ths.emplace_back(std::thread([&s]() {
             for (int i = 0; i < SAMPLES; i++) {
-                s.acc.store(5, std::memory_order_relaxed);
+                s.acc.fetch_add(1, std::memory_order_relaxed);
             }
         }));
     }
