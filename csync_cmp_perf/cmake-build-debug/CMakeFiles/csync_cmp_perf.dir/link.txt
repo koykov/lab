@@ -1,1 +1,0 @@
-/usr/bin/c++  -I/usr/include/harfbuzz -lpthread -Wall -Wextra -Werror -g   CMakeFiles/csync_cmp_perf.dir/main.cpp.o  -o csync_cmp_perf 

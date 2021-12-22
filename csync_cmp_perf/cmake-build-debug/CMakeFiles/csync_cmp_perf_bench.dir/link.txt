@@ -1,1 +1,0 @@
-/usr/bin/c++  -I/usr/include/harfbuzz -lpthread -Wall -Wextra -Werror -g   CMakeFiles/csync_cmp_perf_bench.dir/bench.cpp.o  -o csync_cmp_perf_bench  /usr/lib64/libbenchmark.so.1.5.6 -pthread /usr/lib64/librt.so 
