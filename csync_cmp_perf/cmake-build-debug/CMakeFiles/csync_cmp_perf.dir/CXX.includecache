@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/koykov/go/src/github.com/koykov/lab/csync_cmp_perf/main.cpp
+iostream
+-
+atomic
+-
+vector
+-
+thread
+-
+mutex
+-
+

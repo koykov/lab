@@ -1,0 +1,4 @@
+/home/koykov/go/src/github.com/koykov/lab/csync_cmp_perf/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/koykov/go/src/github.com/koykov/lab/csync_cmp_perf/cmake-build-debug/CMakeFiles/csync_cmp_perf_bench.dir
+/home/koykov/go/src/github.com/koykov/lab/csync_cmp_perf/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/koykov/go/src/github.com/koykov/lab/csync_cmp_perf/cmake-build-debug/CMakeFiles/csync_cmp_perf.dir
