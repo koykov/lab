@@ -10,15 +10,12 @@ import (
 
 func resetUnsafe(p []byte) []byte {
 	h := (*reflect.SliceHeader)(unsafe.Pointer(&p))
-	reset1(h.Data, h.Cap)
+	addr := uint64(h.Data)
+	for i := 0; i < cap(p); i++ {
+		*(*byte)(unsafe.Pointer(uintptr(addr + uint64(i)))) = 0
+	}
 	return p
 }
-
-// func reset1(addr uintptr, l int) {
-// 	for i := 0; i < l; i++ {
-// 		*(*byte)(unsafe.Pointer(addr + uintptr(i))) = 0
-// 	}
-// }
 
 func resetSafe(p []byte) []byte {
 	n := cap(p)
@@ -45,16 +42,6 @@ func BenchmarkResetSlice(b *testing.B) {
 			_ = resetUnsafe(x)
 		}
 	})
-	// b.Run("amd64", func(b *testing.B) {
-	// 	x := make([]byte, 10, 10)
-	// 	x = bytealg.Map(func(r rune) rune {
-	// 		return 124
-	// 	}, x)
-	// 	x = x[:5]
-	// 	for i := 0; i < b.N; i++ {
-	// 		_ = resetAmd64(x)
-	// 	}
-	// })
 	b.Run("safe", func(b *testing.B) {
 		x := make([]byte, 10, 10)
 		x = bytealg.Map(func(r rune) rune {
