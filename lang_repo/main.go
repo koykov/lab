@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"strings"
 )
 
 type languagesTuple struct {
@@ -217,7 +218,7 @@ func main() {
 			continue
 		}
 		if t, ok := idx[lang]; ok {
-			t.Scripts = append(t.Scripts, script)
+			t.Scripts = append(t.Scripts, strings.ReplaceAll(script, " ", "_"))
 			continue
 		}
 	}

@@ -155,7 +155,7 @@
 		"iso639_3": "zho",
 		"scripts": [
 			"Bopomofo",
-			"Phags Pa",
+			"Phags_Pa",
 			"Han",
 			"Han"
 		]
@@ -562,7 +562,7 @@
 		"scripts": [
 			"Cyrillic",
 			"Mongolian",
-			"Phags Pa"
+			"Phags_Pa"
 		]
 	},
 	{
