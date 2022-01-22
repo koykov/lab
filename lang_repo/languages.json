@@ -4,6 +4,7 @@
 		"native": "Afrikaans",
 		"iso639_1": "af",
 		"iso639_3": "afr",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -13,6 +14,7 @@
 		"native": "Akan",
 		"iso639_1": "ak",
 		"iso639_3": "aka",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -22,6 +24,7 @@
 		"native": "Shqip",
 		"iso639_1": "sq",
 		"iso639_3": "sqi",
+		"weight": 0,
 		"scripts": [
 			"Elbasan",
 			"Latin"
@@ -32,6 +35,7 @@
 		"native": "አማርኛ",
 		"iso639_1": "am",
 		"iso639_3": "amh",
+		"weight": 0,
 		"scripts": [
 			"Ethiopic"
 		]
@@ -41,6 +45,7 @@
 		"native": "العربية",
 		"iso639_1": "ar",
 		"iso639_3": "ara",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Syriac"
@@ -51,6 +56,7 @@
 		"native": "Հայերեն",
 		"iso639_1": "hy",
 		"iso639_3": "hye",
+		"weight": 0,
 		"scripts": [
 			"Armenian"
 		]
@@ -60,6 +66,7 @@
 		"native": "azərbaycan dili",
 		"iso639_1": "az",
 		"iso639_3": "aze",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Cyrillic",
@@ -71,6 +78,7 @@
 		"native": "euskara, euskera",
 		"iso639_1": "eu",
 		"iso639_3": "eus",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -80,6 +88,7 @@
 		"native": "भोजपुरी",
 		"iso639_1": "bh",
 		"iso639_3": "bho",
+		"weight": 0,
 		"scripts": [
 			"Devanagari"
 		]
@@ -89,6 +98,7 @@
 		"native": "беларуская мова",
 		"iso639_1": "be",
 		"iso639_3": "bel",
+		"weight": 0,
 		"scripts": [
 			"Cyrillic"
 		]
@@ -98,6 +108,7 @@
 		"native": "বাংলা",
 		"iso639_1": "bn",
 		"iso639_3": "ben",
+		"weight": 0,
 		"scripts": [
 			"Bengali"
 		]
@@ -107,6 +118,7 @@
 		"native": "bosanski jezik",
 		"iso639_1": "bs",
 		"iso639_3": "bos",
+		"weight": 0,
 		"scripts": [
 			"Cyrillic",
 			"Latin"
@@ -117,6 +129,7 @@
 		"native": "български език",
 		"iso639_1": "bg",
 		"iso639_3": "bul",
+		"weight": 0,
 		"scripts": [
 			"Cyrillic"
 		]
@@ -126,6 +139,7 @@
 		"native": "ဗမာစာ",
 		"iso639_1": "my",
 		"iso639_3": "mya",
+		"weight": 0,
 		"scripts": [
 			"Myanmar"
 		]
@@ -135,6 +149,7 @@
 		"native": "català",
 		"iso639_1": "ca",
 		"iso639_3": "cat",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -144,6 +159,7 @@
 		"native": "chiCheŵa, chinyanja",
 		"iso639_1": "ny",
 		"iso639_3": "nya",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -153,9 +169,10 @@
 		"native": "中文 (Zhōngwén), 汉语, 漢語",
 		"iso639_1": "zh",
 		"iso639_3": "zho",
+		"weight": 0,
 		"scripts": [
 			"Bopomofo",
-			"Phags_Pa",
+			"Phags Pa",
 			"Han",
 			"Han"
 		]
@@ -165,6 +182,7 @@
 		"native": "hrvatski jezik",
 		"iso639_1": "hr",
 		"iso639_3": "hrv",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -174,6 +192,7 @@
 		"native": "čeština, český jazyk",
 		"iso639_1": "cs",
 		"iso639_3": "ces",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -183,6 +202,7 @@
 		"native": "dansk",
 		"iso639_1": "da",
 		"iso639_3": "dan",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -192,6 +212,7 @@
 		"native": "Nederlands, Vlaams",
 		"iso639_1": "nl",
 		"iso639_3": "nld",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -201,6 +222,7 @@
 		"native": "English",
 		"iso639_1": "en",
 		"iso639_3": "eng",
+		"weight": 0,
 		"scripts": [
 			"Deseret",
 			"Latin",
@@ -212,6 +234,7 @@
 		"native": "Esperanto",
 		"iso639_1": "eo",
 		"iso639_3": "epo",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -221,6 +244,7 @@
 		"native": "eesti, eesti keel",
 		"iso639_1": "et",
 		"iso639_3": "est",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -230,6 +254,7 @@
 		"native": "suomi, suomen kieli",
 		"iso639_1": "fi",
 		"iso639_3": "fin",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -239,6 +264,7 @@
 		"native": "français, langue française",
 		"iso639_1": "fr",
 		"iso639_3": "fra",
+		"weight": 0,
 		"scripts": [
 			"Duployan",
 			"Latin"
@@ -249,6 +275,7 @@
 		"native": "ქართული",
 		"iso639_1": "ka",
 		"iso639_3": "kat",
+		"weight": 0,
 		"scripts": [
 			"Georgian"
 		]
@@ -258,6 +285,7 @@
 		"native": "Deutsch",
 		"iso639_1": "de",
 		"iso639_3": "deu",
+		"weight": 0,
 		"scripts": [
 			"Latin",
 			"Runic"
@@ -268,6 +296,7 @@
 		"native": "ελληνικά",
 		"iso639_1": "el",
 		"iso639_3": "ell",
+		"weight": 0,
 		"scripts": [
 			"Greek"
 		]
@@ -277,6 +306,7 @@
 		"native": "ગુજરાતી",
 		"iso639_1": "gu",
 		"iso639_3": "guj",
+		"weight": 0,
 		"scripts": [
 			"Gujarati"
 		]
@@ -286,6 +316,7 @@
 		"native": "Kreyòl ayisyen",
 		"iso639_1": "ht",
 		"iso639_3": "hat",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -295,6 +326,7 @@
 		"native": "(Hausa) هَوُسَ",
 		"iso639_1": "ha",
 		"iso639_3": "hau",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Latin"
@@ -305,6 +337,7 @@
 		"native": "עברית",
 		"iso639_1": "he",
 		"iso639_3": "heb",
+		"weight": 0,
 		"scripts": [
 			"Hebrew"
 		]
@@ -314,6 +347,7 @@
 		"native": "हिन्दी, हिंदी",
 		"iso639_1": "hi",
 		"iso639_3": "hin",
+		"weight": 0,
 		"scripts": [
 			"Devanagari",
 			"Latin",
@@ -325,6 +359,7 @@
 		"native": "magyar",
 		"iso639_1": "hu",
 		"iso639_3": "hun",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -334,6 +369,7 @@
 		"native": "Bahasa Indonesia",
 		"iso639_1": "id",
 		"iso639_3": "ind",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Latin"
@@ -344,6 +380,7 @@
 		"native": "Gaeilge",
 		"iso639_1": "ga",
 		"iso639_3": "gle",
+		"weight": 0,
 		"scripts": [
 			"Ogham"
 		]
@@ -353,6 +390,7 @@
 		"native": "Asụsụ Igbo",
 		"iso639_1": "ig",
 		"iso639_3": "ibo",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -362,6 +400,7 @@
 		"native": "Íslenska",
 		"iso639_1": "is",
 		"iso639_3": "isl",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -371,6 +410,7 @@
 		"native": "",
 		"iso639_1": "",
 		"iso639_3": "ilo",
+		"weight": 0,
 		"scripts": [
 			"Latin",
 			"Tagalog"
@@ -381,6 +421,7 @@
 		"native": "Italiano",
 		"iso639_1": "it",
 		"iso639_3": "ita",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -390,6 +431,7 @@
 		"native": "日本語 (にほんご)",
 		"iso639_1": "ja",
 		"iso639_3": "jpn",
+		"weight": 0,
 		"scripts": [
 			"Hiragana",
 			"Katakana"
@@ -400,6 +442,7 @@
 		"native": "ꦧꦱꦗꦮ, Basa Jawa",
 		"iso639_1": "jv",
 		"iso639_3": "jav",
+		"weight": 0,
 		"scripts": [
 			"Javanese",
 			"Latin"
@@ -410,6 +453,7 @@
 		"native": "ಕನ್ನಡ",
 		"iso639_1": "kn",
 		"iso639_3": "kan",
+		"weight": 0,
 		"scripts": [
 			"Kannada"
 		]
@@ -419,6 +463,7 @@
 		"native": "қазақ тілі",
 		"iso639_1": "kk",
 		"iso639_3": "kaz",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Cyrillic"
@@ -429,6 +474,7 @@
 		"native": "ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ",
 		"iso639_1": "km",
 		"iso639_3": "khm",
+		"weight": 0,
 		"scripts": [
 			"Khmer"
 		]
@@ -438,6 +484,7 @@
 		"native": "Ikinyarwanda",
 		"iso639_1": "rw",
 		"iso639_3": "kin",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -447,6 +494,7 @@
 		"native": "한국어",
 		"iso639_1": "ko",
 		"iso639_3": "kor",
+		"weight": 0,
 		"scripts": [
 			"Hangul"
 		]
@@ -456,6 +504,7 @@
 		"native": "Kurdî, كوردی‎",
 		"iso639_1": "ku",
 		"iso639_3": "kur",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Cyrillic"
@@ -466,6 +515,7 @@
 		"native": "latine, lingua latina",
 		"iso639_1": "la",
 		"iso639_3": "lat",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -475,6 +525,7 @@
 		"native": "Luganda",
 		"iso639_1": "lg",
 		"iso639_3": "lug",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Latin"
@@ -485,6 +536,7 @@
 		"native": "lietuvių kalba",
 		"iso639_1": "lt",
 		"iso639_3": "lit",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -494,6 +546,7 @@
 		"native": "latviešu valoda",
 		"iso639_1": "lv",
 		"iso639_3": "lav",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -503,6 +556,7 @@
 		"native": "македонски јазик",
 		"iso639_1": "mk",
 		"iso639_3": "mkd",
+		"weight": 0,
 		"scripts": [
 			"Cyrillic"
 		]
@@ -512,6 +566,7 @@
 		"native": "fiteny malagasy",
 		"iso639_1": "mg",
 		"iso639_3": "mlg",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -521,6 +576,7 @@
 		"native": "bahasa Melayu, بهاس ملايو‎",
 		"iso639_1": "ms",
 		"iso639_3": "msa",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Latin"
@@ -531,6 +587,7 @@
 		"native": "മലയാളം",
 		"iso639_1": "ml",
 		"iso639_3": "mal",
+		"weight": 0,
 		"scripts": [
 			"Malayalam"
 		]
@@ -540,6 +597,7 @@
 		"native": "te reo Māori",
 		"iso639_1": "mi",
 		"iso639_3": "mri",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -549,6 +607,7 @@
 		"native": "मराठी",
 		"iso639_1": "mr",
 		"iso639_3": "mar",
+		"weight": 0,
 		"scripts": [
 			"Devanagari",
 			"Modi"
@@ -559,10 +618,11 @@
 		"native": "Монгол хэл",
 		"iso639_1": "mn",
 		"iso639_3": "mon",
+		"weight": 0,
 		"scripts": [
 			"Cyrillic",
 			"Mongolian",
-			"Phags_Pa"
+			"Phags Pa"
 		]
 	},
 	{
@@ -570,6 +630,7 @@
 		"native": "ˈməi̯tʰɪli",
 		"iso639_1": "",
 		"iso639_3": "mai",
+		"weight": 0,
 		"scripts": [
 			"Devanagari",
 			"Tirhuta"
@@ -580,6 +641,7 @@
 		"native": "नेपाली",
 		"iso639_1": "ne",
 		"iso639_3": "nep",
+		"weight": 0,
 		"scripts": [
 			"Devanagari"
 		]
@@ -589,6 +651,7 @@
 		"native": "Norsk bokmål",
 		"iso639_1": "nb",
 		"iso639_3": "nob",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -598,6 +661,7 @@
 		"native": "Norsk nynorsk",
 		"iso639_1": "nn",
 		"iso639_3": "nno",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -607,6 +671,7 @@
 		"native": "Afaan Oromoo",
 		"iso639_1": "om",
 		"iso639_3": "orm",
+		"weight": 0,
 		"scripts": [
 			"Ethiopic"
 		]
@@ -616,6 +681,7 @@
 		"native": "ଓଡ଼ିଆ",
 		"iso639_1": "or",
 		"iso639_3": "ori",
+		"weight": 0,
 		"scripts": [
 			"Telugu"
 		]
@@ -625,6 +691,7 @@
 		"native": "ਪੰਜਾਬੀ",
 		"iso639_1": "pa",
 		"iso639_3": "pan",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Gurmukhi"
@@ -635,6 +702,7 @@
 		"native": "فارسی",
 		"iso639_1": "fa",
 		"iso639_3": "fas",
+		"weight": 0,
 		"scripts": [
 			"Arabic"
 		]
@@ -644,6 +712,7 @@
 		"native": "język polski, polszczyzna",
 		"iso639_1": "pl",
 		"iso639_3": "pol",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -653,6 +722,7 @@
 		"native": "Português",
 		"iso639_1": "pt",
 		"iso639_3": "por",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -662,6 +732,7 @@
 		"native": "Ikirundi",
 		"iso639_1": "rn",
 		"iso639_3": "run",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -671,6 +742,7 @@
 		"native": "Română",
 		"iso639_1": "ro",
 		"iso639_3": "ron",
+		"weight": 0,
 		"scripts": [
 			"Cyrillic",
 			"Latin"
@@ -681,6 +753,7 @@
 		"native": "Русский",
 		"iso639_1": "ru",
 		"iso639_3": "rus",
+		"weight": 0,
 		"scripts": [
 			"Cyrillic"
 		]
@@ -690,6 +763,7 @@
 		"native": "Sarā'īkī",
 		"iso639_1": "",
 		"iso639_3": "skr",
+		"weight": 0,
 		"scripts": [
 			"Arabic"
 		]
@@ -699,6 +773,7 @@
 		"native": "српски језик",
 		"iso639_1": "sr",
 		"iso639_3": "srp",
+		"weight": 0,
 		"scripts": [
 			"Cyrillic",
 			"Latin"
@@ -709,6 +784,7 @@
 		"native": "chiShona",
 		"iso639_1": "sn",
 		"iso639_3": "sna",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -718,6 +794,7 @@
 		"native": "සිංහල",
 		"iso639_1": "si",
 		"iso639_3": "sin",
+		"weight": 0,
 		"scripts": [
 			"Sinhala"
 		]
@@ -727,6 +804,7 @@
 		"native": "slovenčina, slovenský jazyk",
 		"iso639_1": "sk",
 		"iso639_3": "slk",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -736,6 +814,7 @@
 		"native": "slovenski jezik, slovenščina",
 		"iso639_1": "sl",
 		"iso639_3": "slv",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -745,6 +824,7 @@
 		"native": "Soomaaliga, af Soomaali",
 		"iso639_1": "so",
 		"iso639_3": "som",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Latin",
@@ -756,6 +836,7 @@
 		"native": "Sesotho",
 		"iso639_1": "st",
 		"iso639_3": "sot",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -765,6 +846,7 @@
 		"native": "Español",
 		"iso639_1": "es",
 		"iso639_3": "spa",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -774,6 +856,7 @@
 		"native": "Kiswahili",
 		"iso639_1": "sw",
 		"iso639_3": "swa",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -783,6 +866,7 @@
 		"native": "svenska",
 		"iso639_1": "sv",
 		"iso639_3": "swe",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -792,6 +876,7 @@
 		"native": "தமிழ்",
 		"iso639_1": "ta",
 		"iso639_3": "tam",
+		"weight": 0,
 		"scripts": [
 			"Tamil"
 		]
@@ -801,6 +886,7 @@
 		"native": "తెలుగు",
 		"iso639_1": "te",
 		"iso639_3": "tel",
+		"weight": 0,
 		"scripts": [
 			"Telugu"
 		]
@@ -810,6 +896,7 @@
 		"native": "ไทย",
 		"iso639_1": "th",
 		"iso639_3": "tha",
+		"weight": 0,
 		"scripts": [
 			"Thai"
 		]
@@ -819,6 +906,7 @@
 		"native": "ትግርኛ",
 		"iso639_1": "ti",
 		"iso639_3": "tir",
+		"weight": 0,
 		"scripts": [
 			"Ethiopic"
 		]
@@ -828,6 +916,7 @@
 		"native": "Türkmen, Түркмен",
 		"iso639_1": "tk",
 		"iso639_3": "tuk",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Cyrillic",
@@ -839,6 +928,7 @@
 		"native": "Wikang Tagalog",
 		"iso639_1": "tl",
 		"iso639_3": "tgl",
+		"weight": 0,
 		"scripts": [
 			"Tagalog"
 		]
@@ -848,6 +938,7 @@
 		"native": "Setswana",
 		"iso639_1": "tn",
 		"iso639_3": "tsn",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -857,6 +948,7 @@
 		"native": "Türkçe",
 		"iso639_1": "tr",
 		"iso639_3": "tur",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Latin"
@@ -867,6 +959,7 @@
 		"native": "Xitsonga",
 		"iso639_1": "ts",
 		"iso639_3": "tso",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -876,6 +969,7 @@
 		"native": "ئۇيغۇرچە‎, Uyghurche",
 		"iso639_1": "ug",
 		"iso639_3": "uig",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Cyrillic"
@@ -886,6 +980,7 @@
 		"native": "Українська",
 		"iso639_1": "uk",
 		"iso639_3": "ukr",
+		"weight": 0,
 		"scripts": [
 			"Cyrillic"
 		]
@@ -895,6 +990,7 @@
 		"native": "اردو",
 		"iso639_1": "ur",
 		"iso639_3": "urd",
+		"weight": 0,
 		"scripts": [
 			"Arabic"
 		]
@@ -904,6 +1000,7 @@
 		"native": "Oʻzbek, Ўзбек, أۇزبېك‎",
 		"iso639_1": "uz",
 		"iso639_3": "uzb",
+		"weight": 0,
 		"scripts": [
 			"Arabic",
 			"Cyrillic",
@@ -915,6 +1012,7 @@
 		"native": "Tiếng Việt",
 		"iso639_1": "vi",
 		"iso639_3": "vie",
+		"weight": 0,
 		"scripts": [
 			"Han",
 			"Latin"
@@ -925,6 +1023,7 @@
 		"native": "Cymraeg",
 		"iso639_1": "cy",
 		"iso639_3": "cym",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -934,6 +1033,7 @@
 		"native": "isiXhosa",
 		"iso639_1": "xh",
 		"iso639_3": "xho",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -943,6 +1043,7 @@
 		"native": "ייִדיש",
 		"iso639_1": "yi",
 		"iso639_3": "yid",
+		"weight": 0,
 		"scripts": [
 			"Hebrew"
 		]
@@ -952,6 +1053,7 @@
 		"native": "Yorùbá",
 		"iso639_1": "yo",
 		"iso639_3": "yor",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]
@@ -961,6 +1063,7 @@
 		"native": "isiZulu",
 		"iso639_1": "zu",
 		"iso639_3": "zul",
+		"weight": 0,
 		"scripts": [
 			"Latin"
 		]

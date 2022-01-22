@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
-	"strings"
+	"sort"
 )
 
 type languagesTuple struct {
@@ -13,169 +13,15 @@ type languagesTuple struct {
 	Native  string   `json:"native"`
 	Iso6391 string   `json:"iso639_1"`
 	Iso6393 string   `json:"iso639_3"`
+	Weight  uint     `json:"weight"`
 	Scripts []string `json:"scripts"`
 }
 
-var (
-	sidx = map[string]struct{}{
-		"Adlam":                  {},
-		"Ahom":                   {},
-		"Anatolian Hieroglyphs":  {},
-		"Arabic":                 {},
-		"Armenian":               {},
-		"Avestan":                {},
-		"Balinese":               {},
-		"Bamum":                  {},
-		"Bassa Vah":              {},
-		"Batak":                  {},
-		"Bengali":                {},
-		"Bhaiksuki":              {},
-		"Bopomofo":               {},
-		"Brahmi":                 {},
-		"Braille":                {},
-		"Buginese":               {},
-		"Buhid":                  {},
-		"Canadian Aboriginal":    {},
-		"Carian":                 {},
-		"Caucasian Albanian":     {},
-		"Chakma":                 {},
-		"Cham":                   {},
-		"Cherokee":               {},
-		"Chorasmian":             {},
-		"Common":                 {},
-		"Coptic":                 {},
-		"Cuneiform":              {},
-		"Cypriot":                {},
-		"Cyrillic":               {},
-		"Deseret":                {},
-		"Devanagari":             {},
-		"Dives Akuru":            {},
-		"Dogra":                  {},
-		"Duployan":               {},
-		"Egyptian Hieroglyphs":   {},
-		"Elbasan":                {},
-		"Elymaic":                {},
-		"Ethiopic":               {},
-		"Georgian":               {},
-		"Glagolitic":             {},
-		"Gothic":                 {},
-		"Grantha":                {},
-		"Greek":                  {},
-		"Gujarati":               {},
-		"Gunjala Gondi":          {},
-		"Gurmukhi":               {},
-		"Han":                    {},
-		"Hangul":                 {},
-		"Hanifi Rohingya":        {},
-		"Hanunoo":                {},
-		"Hatran":                 {},
-		"Hebrew":                 {},
-		"Hiragana":               {},
-		"Imperial Aramaic":       {},
-		"Inherited":              {},
-		"Inscriptional Pahlavi":  {},
-		"Inscriptional Parthian": {},
-		"Javanese":               {},
-		"Kaithi":                 {},
-		"Kannada":                {},
-		"Katakana":               {},
-		"Kayah Li":               {},
-		"Kharoshthi":             {},
-		"Khitan Small Script":    {},
-		"Khmer":                  {},
-		"Khojki":                 {},
-		"Khudawadi":              {},
-		"Lao":                    {},
-		"Latin":                  {},
-		"Lepcha":                 {},
-		"Limbu":                  {},
-		"Linear A":               {},
-		"Linear B":               {},
-		"Lisu":                   {},
-		"Lycian":                 {},
-		"Lydian":                 {},
-		"Mahajani":               {},
-		"Makasar":                {},
-		"Malayalam":              {},
-		"Mandaic":                {},
-		"Manichaean":             {},
-		"Marchen":                {},
-		"Masaram Gondi":          {},
-		"Medefaidrin":            {},
-		"Meetei Mayek":           {},
-		"Mende Kikakui":          {},
-		"Meroitic Cursive":       {},
-		"Meroitic Hieroglyphs":   {},
-		"Miao":                   {},
-		"Modi":                   {},
-		"Mongolian":              {},
-		"Mro":                    {},
-		"Multani":                {},
-		"Myanmar":                {},
-		"Nabataean":              {},
-		"Nandinagari":            {},
-		"New Tai Lue":            {},
-		"Newa":                   {},
-		"Nko":                    {},
-		"Nushu":                  {},
-		"Nyiakeng Puachue Hmong": {},
-		"Ogham":                  {},
-		"Ol Chiki":               {},
-		"Old Hungarian":          {},
-		"Old Italic":             {},
-		"Old North Arabian":      {},
-		"Old Permic":             {},
-		"Old Persian":            {},
-		"Old Sogdian":            {},
-		"Old South Arabian":      {},
-		"Old Turkic":             {},
-		"Oriya":                  {},
-		"Osage":                  {},
-		"Osmanya":                {},
-		"Pahawh Hmong":           {},
-		"Palmyrene":              {},
-		"Pau Cin Hau":            {},
-		"Phags Pa":               {},
-		"Phoenician":             {},
-		"Psalter Pahlavi":        {},
-		"Rejang":                 {},
-		"Runic":                  {},
-		"Samaritan":              {},
-		"Saurashtra":             {},
-		"Sharada":                {},
-		"Shavian":                {},
-		"Siddham":                {},
-		"SignWriting":            {},
-		"Sinhala":                {},
-		"Sogdian":                {},
-		"Sora Sompeng":           {},
-		"Soyombo":                {},
-		"Sundanese":              {},
-		"Syloti Nagri":           {},
-		"Syriac":                 {},
-		"Tagalog":                {},
-		"Tagbanwa":               {},
-		"Tai Le":                 {},
-		"Tai Tham":               {},
-		"Tai Viet":               {},
-		"Takri":                  {},
-		"Tamil":                  {},
-		"Tangut":                 {},
-		"Telugu":                 {},
-		"Thaana":                 {},
-		"Thai":                   {},
-		"Tibetan":                {},
-		"Tifinagh":               {},
-		"Tirhuta":                {},
-		"Ugaritic":               {},
-		"Vai":                    {},
-		"Wancho":                 {},
-		"Warang Citi":            {},
-		"Yezidi":                 {},
-		"Yi":                     {},
-		"Zanabazar Square":       {},
-	}
-)
+type scriptsTuple struct {
+	Name      string   `json:"name"`
+	Weight    uint     `json:"weight"`
+	Languages []string `json:"languages"`
+}
 
 func main() {
 	var (
@@ -218,14 +64,54 @@ func main() {
 			continue
 		}
 		if t, ok := idx[lang]; ok {
-			t.Scripts = append(t.Scripts, strings.ReplaceAll(script, " ", "_"))
+			t.Scripts = append(t.Scripts, script)
 			continue
 		}
 	}
 	if raw, err = json.MarshalIndent(tupl, "", "\t"); err != nil {
 		log.Fatalln(err)
 	}
-	if err = os.WriteFile("target.json", raw, 0644); err != nil {
+	if err = os.WriteFile("languages.json", raw, 0644); err != nil {
 		log.Fatalln(err)
 	}
+
+	var (
+		scrs []scriptsTuple
+		scri = make(map[string]int)
+	)
+	for i := 0; i < len(tupl); i++ {
+		for j := 0; j < len(tupl[i].Scripts); j++ {
+			scr := tupl[i].Scripts[j]
+			if idx, ok := scri[scr]; ok {
+				scrs[idx].Weight++
+				ok = false
+				for k := 0; k < len(scrs[idx].Languages); k++ {
+					ok = ok || scrs[idx].Languages[k] == tupl[i].Name
+				}
+				if !ok {
+					scrs[idx].Languages = append(scrs[idx].Languages, tupl[i].Name)
+				}
+			} else {
+				scrs = append(scrs, scriptsTuple{
+					Name:      scr,
+					Weight:    1,
+					Languages: []string{tupl[i].Name},
+				})
+				scri[scr] = len(scrs) - 1
+			}
+		}
+	}
+
+	sort.Slice(scrs, func(i, j int) bool {
+		return scrs[i].Weight > scrs[j].Weight
+	})
+
+	if raw, err = json.MarshalIndent(scrs, "", "\t"); err != nil {
+		log.Fatalln(err)
+	}
+	if err = os.WriteFile("scripts.json", raw, 0644); err != nil {
+		log.Fatalln(err)
+	}
+
+	return
 }

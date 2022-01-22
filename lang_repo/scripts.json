@@ -1,0 +1,383 @@
+[
+	{
+		"name": "Latin",
+		"weight": 61,
+		"languages": [
+			"Afrikaans",
+			"Akan",
+			"Albanian",
+			"Azerbaijani",
+			"Basque",
+			"Bosnian",
+			"Catalan",
+			"Chewa",
+			"Croatian",
+			"Czech",
+			"Danish",
+			"Dutch",
+			"English",
+			"Esperanto",
+			"Estonian",
+			"Finnish",
+			"French",
+			"German",
+			"Haitian Creole",
+			"Hausa",
+			"Hindi",
+			"Hungarian",
+			"Indonesian",
+			"Igbo",
+			"Icelandic",
+			"Ilocano",
+			"Italian",
+			"Javanese",
+			"Kinyarwanda",
+			"Latin",
+			"Ganda",
+			"Lithuanian",
+			"Latvian",
+			"Malagasy",
+			"Malay",
+			"Maori",
+			"Norwegian Bokmal",
+			"Norwegian Nynorsk",
+			"Polish",
+			"Portuguese",
+			"Kirundi",
+			"Romanian",
+			"Serbian",
+			"Shona",
+			"Slovak",
+			"Slovenian",
+			"Somali",
+			"Sotho",
+			"Spanish",
+			"Swahili",
+			"Swedish",
+			"Turkmen",
+			"Tswana",
+			"Turkish",
+			"Tsonga",
+			"Uzbek",
+			"Vietnamese",
+			"Welsh",
+			"Xhosa",
+			"Yoruba",
+			"Zulu"
+		]
+	},
+	{
+		"name": "Arabic",
+		"weight": 17,
+		"languages": [
+			"Arabic",
+			"Azerbaijani",
+			"Hausa",
+			"Indonesian",
+			"Kazakh",
+			"Kurdish",
+			"Ganda",
+			"Malay",
+			"Punjabi",
+			"Persian",
+			"Saraiki",
+			"Somali",
+			"Turkmen",
+			"Turkish",
+			"Uyghur",
+			"Urdu",
+			"Uzbek"
+		]
+	},
+	{
+		"name": "Cyrillic",
+		"weight": 15,
+		"languages": [
+			"Azerbaijani",
+			"Belarusian",
+			"Bosnian",
+			"Bulgarian",
+			"Kazakh",
+			"Kurdish",
+			"Macedonian",
+			"Mongolian",
+			"Romanian",
+			"Russian",
+			"Serbian",
+			"Turkmen",
+			"Uyghur",
+			"Ukrainian",
+			"Uzbek"
+		]
+	},
+	{
+		"name": "Devanagari",
+		"weight": 5,
+		"languages": [
+			"Bhojpuri",
+			"Hindi",
+			"Marathi",
+			"Maithili",
+			"Nepali"
+		]
+	},
+	{
+		"name": "Ethiopic",
+		"weight": 3,
+		"languages": [
+			"Amharic",
+			"Oromo",
+			"Tigrinya"
+		]
+	},
+	{
+		"name": "Han",
+		"weight": 3,
+		"languages": [
+			"Chinese",
+			"Vietnamese"
+		]
+	},
+	{
+		"name": "Tagalog",
+		"weight": 2,
+		"languages": [
+			"Ilocano",
+			"Tagalog"
+		]
+	},
+	{
+		"name": "Phags Pa",
+		"weight": 2,
+		"languages": [
+			"Chinese",
+			"Mongolian"
+		]
+	},
+	{
+		"name": "Telugu",
+		"weight": 2,
+		"languages": [
+			"Oriya",
+			"Telugu"
+		]
+	},
+	{
+		"name": "Hebrew",
+		"weight": 2,
+		"languages": [
+			"Hebrew",
+			"Yiddish"
+		]
+	},
+	{
+		"name": "Bopomofo",
+		"weight": 1,
+		"languages": [
+			"Chinese"
+		]
+	},
+	{
+		"name": "Myanmar",
+		"weight": 1,
+		"languages": [
+			"Burmese"
+		]
+	},
+	{
+		"name": "Bengali",
+		"weight": 1,
+		"languages": [
+			"Bengali"
+		]
+	},
+	{
+		"name": "Deseret",
+		"weight": 1,
+		"languages": [
+			"English"
+		]
+	},
+	{
+		"name": "Shavian",
+		"weight": 1,
+		"languages": [
+			"English"
+		]
+	},
+	{
+		"name": "Duployan",
+		"weight": 1,
+		"languages": [
+			"French"
+		]
+	},
+	{
+		"name": "Georgian",
+		"weight": 1,
+		"languages": [
+			"Georgian"
+		]
+	},
+	{
+		"name": "Runic",
+		"weight": 1,
+		"languages": [
+			"German"
+		]
+	},
+	{
+		"name": "Greek",
+		"weight": 1,
+		"languages": [
+			"Greek"
+		]
+	},
+	{
+		"name": "Gujarati",
+		"weight": 1,
+		"languages": [
+			"Gujarati"
+		]
+	},
+	{
+		"name": "Armenian",
+		"weight": 1,
+		"languages": [
+			"Armenian"
+		]
+	},
+	{
+		"name": "Mahajani",
+		"weight": 1,
+		"languages": [
+			"Hindi"
+		]
+	},
+	{
+		"name": "Ogham",
+		"weight": 1,
+		"languages": [
+			"Irish"
+		]
+	},
+	{
+		"name": "Syriac",
+		"weight": 1,
+		"languages": [
+			"Arabic"
+		]
+	},
+	{
+		"name": "Hiragana",
+		"weight": 1,
+		"languages": [
+			"Japanese"
+		]
+	},
+	{
+		"name": "Katakana",
+		"weight": 1,
+		"languages": [
+			"Japanese"
+		]
+	},
+	{
+		"name": "Javanese",
+		"weight": 1,
+		"languages": [
+			"Javanese"
+		]
+	},
+	{
+		"name": "Kannada",
+		"weight": 1,
+		"languages": [
+			"Kannada"
+		]
+	},
+	{
+		"name": "Khmer",
+		"weight": 1,
+		"languages": [
+			"Khmer"
+		]
+	},
+	{
+		"name": "Hangul",
+		"weight": 1,
+		"languages": [
+			"Korean"
+		]
+	},
+	{
+		"name": "Malayalam",
+		"weight": 1,
+		"languages": [
+			"Malayalam"
+		]
+	},
+	{
+		"name": "Modi",
+		"weight": 1,
+		"languages": [
+			"Marathi"
+		]
+	},
+	{
+		"name": "Mongolian",
+		"weight": 1,
+		"languages": [
+			"Mongolian"
+		]
+	},
+	{
+		"name": "Tirhuta",
+		"weight": 1,
+		"languages": [
+			"Maithili"
+		]
+	},
+	{
+		"name": "Elbasan",
+		"weight": 1,
+		"languages": [
+			"Albanian"
+		]
+	},
+	{
+		"name": "Gurmukhi",
+		"weight": 1,
+		"languages": [
+			"Punjabi"
+		]
+	},
+	{
+		"name": "Sinhala",
+		"weight": 1,
+		"languages": [
+			"Sinhalese"
+		]
+	},
+	{
+		"name": "Osmanya",
+		"weight": 1,
+		"languages": [
+			"Somali"
+		]
+	},
+	{
+		"name": "Tamil",
+		"weight": 1,
+		"languages": [
+			"Tamil"
+		]
+	},
+	{
+		"name": "Thai",
+		"weight": 1,
+		"languages": [
+			"Thai"
+		]
+	}
+]
