@@ -7,8 +7,18 @@ import (
 
 type repo struct {
 	hsh hash.BHasher
+	lng string
 	idx map[uint64]entry.Entry64
 	buf []byte
+	out []uint64
+}
+
+func newRepo(hsh hash.BHasher) *repo {
+	r := repo{
+		hsh: hsh,
+		idx: make(map[uint64]entry.Entry64),
+	}
+	return &r
 }
 
 func (r *repo) add(p []byte) {
@@ -30,7 +40,9 @@ func (r repo) flush(filename string) (err error) {
 }
 
 func (r *repo) reset() {
+	r.lng = ""
 	r.buf = r.buf[:0]
+	r.out = r.out[:0]
 	for h := range r.idx {
 		delete(r.idx, h)
 	}
