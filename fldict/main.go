@@ -77,7 +77,8 @@ func main() {
 			continue
 		}
 		log.Printf("processing '%s' ...\n", fn)
-		log.Printf("processing '%s' ...\n", rfn)
-		// todo process fn and rfn
+		if err := scan(rl, rr, fn, rev); err != nil {
+			log.Printf("error: %s\n", err.Error())
+		}
 	}
 }
