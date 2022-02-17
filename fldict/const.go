@@ -6,7 +6,7 @@ var (
 	bCol   = []byte{':'}
 	bNl    = []byte{'\n'}
 	bSep   = []byte{'|'}
-	bTrim  = []byte(" \":!#%&'~?.*+-<=>¿¹²")
+	bTrim  = []byte(" \":!#%&'~?.*+-<=>¿")
 
 	repl = [][]byte{
 		[]byte("prep:"),
