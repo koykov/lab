@@ -8,11 +8,6 @@ import (
 	"github.com/koykov/bytealg"
 )
 
-var (
-	bAt    = []byte{'@'}
-	bSpace = []byte{' '}
-)
-
 func scan(dst, dstEn *repo, filename string, reverse bool) error {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -38,7 +33,7 @@ func scan(dst, dstEn *repo, filename string, reverse bool) error {
 			dstEn.add(l)
 		} else {
 			dst.add(l)
-			dst.add(r)
+			dstEn.add(r)
 		}
 	}
 
@@ -46,31 +41,34 @@ func scan(dst, dstEn *repo, filename string, reverse bool) error {
 }
 
 func clean(p []byte) []byte {
-	var pos int
-loop:
-	bp := bytes.IndexByte(p, '(')
-	bp1 := bytes.IndexByte(p, ')')
-	if bp != -1 && bp1 != -1 && bp < bp1 {
-		if bp1 == len(p)-1 {
-			p = p[:bp]
-			goto loop
+	var bd int
+	for i := 0; i < len(p); i++ {
+		if p[i] == '(' {
+			bd++
 		}
-		copy(p, p[bp1:])
-		p = p[:bp+(bp1-bp)]
-		goto loop
-	}
-	if pos = bytes.IndexByte(p, ','); pos == -1 {
-		if pos = bytes.IndexByte(p, '/'); pos == -1 {
-			pos = bytes.IndexByte(p, ';')
+		if p[i] == ')' {
+			bd--
+			if bd < 0 {
+				bd = 0
+			}
+		}
+		if bd > 0 || p[i] == ')' || p[i] == '@' {
+			p[i] = ' '
+		}
+		if p[i] == ',' || p[i] == '/' || p[i] == ';' || p[i] == ':' {
+			p[i] = '|'
 		}
 	}
-	if pos != -1 {
-		p[pos] = '|'
-		if pos < len(p)-1 && p[pos+1] == ' ' {
-			copy(p[pos+1:], p[pos+2:])
-			p = p[:len(p)-1]
+
+	p = bytealg.Trim(p, bSpace)
+	p = bytealg.Trim(p, bCol)
+	for i := 0; i < len(repl); i++ {
+		r := repl[i]
+		if pos := bytes.Index(p, r); pos != -1 {
+			for j := 0; j < len(r); j++ {
+				p[pos+j] = ' '
+			}
 		}
-		goto loop
 	}
-	return bytealg.Trim(p, bSpace)
+	return p
 }
