@@ -1,16 +1,22 @@
 package main
 
 import (
+	"os"
+	"sort"
+
+	"github.com/koykov/bytealg"
 	"github.com/koykov/entry"
+	"github.com/koykov/fastconv"
 	"github.com/koykov/hash"
 )
 
 type repo struct {
-	hsh hash.BHasher
-	lng string
-	idx map[uint64]entry.Entry64
-	buf []byte
-	out []uint64
+	hsh  hash.BHasher
+	lng  string
+	idx  map[uint64]entry.Entry64
+	buf  []byte
+	bufB [][]byte
+	out  []uint64
 }
 
 func newRepo(hsh hash.BHasher) *repo {
@@ -22,21 +28,44 @@ func newRepo(hsh hash.BHasher) *repo {
 }
 
 func (r *repo) add(p []byte) {
-	h := r.hsh.Sum64(p)
-	if _, ok := r.idx[h]; ok {
+	if len(p) == 0 {
 		return
 	}
-	lo := uint32(len(r.buf))
-	r.buf = append(r.buf, p...)
-	hi := uint32(len(r.buf))
-	var e entry.Entry64
-	e.Encode(lo, hi)
-	r.idx[h] = e
+	r.bufB = bytealg.AppendSplit(r.bufB[:0], p, bSep, -1)
+	for i := 0; i < len(r.bufB); i++ {
+		b := bytealg.Trim(r.bufB[i], bTrim)
+		if len(b) == 0 {
+			continue
+		}
+		h := r.hsh.Sum64(b)
+		if _, ok := r.idx[h]; ok {
+			continue
+		}
+		lo := uint32(len(r.buf))
+		r.buf = append(r.buf, b...)
+		hi := uint32(len(r.buf))
+		var e entry.Entry64
+		e.Encode(lo, hi)
+		r.idx[h] = e
+	}
 }
 
-func (r repo) flush(filename string) (err error) {
-	// todo implement me
-	return
+func (r repo) flush(filename string) error {
+	for h := range r.idx {
+		r.out = append(r.out, h)
+	}
+	sort.Sort(&r)
+	_ = os.Remove(filename)
+	f, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	for i := 0; i < len(r.out); i++ {
+		lo, hi := r.idx[r.out[i]].Decode()
+		_, _ = f.Write(r.buf[lo:hi])
+		_, _ = f.Write(bNl)
+	}
+	return f.Close()
 }
 
 func (r *repo) reset() {
@@ -46,4 +75,21 @@ func (r *repo) reset() {
 	for h := range r.idx {
 		delete(r.idx, h)
 	}
+}
+
+func (r repo) Len() int {
+	return len(r.out)
+}
+
+func (r repo) Less(i, j int) bool {
+	var lo, hi uint32
+	lo, hi = r.idx[r.out[i]].Decode()
+	a := fastconv.B2S(r.buf[lo:hi])
+	lo, hi = r.idx[r.out[j]].Decode()
+	b := fastconv.B2S(r.buf[lo:hi])
+	return a < b
+}
+
+func (r *repo) Swap(i, j int) {
+	r.out[i], r.out[j] = r.out[j], r.out[i]
 }
