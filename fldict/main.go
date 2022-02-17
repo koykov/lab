@@ -50,12 +50,13 @@ func init() {
 	}
 
 	rl, rr = newRepo(fnv.BHasher{}), newRepo(fnv.BHasher{})
+	rr.lng = "English"
 }
 
 func main() {
-	var rev bool
 	for i := 0; i < len(src); i++ {
 		fn := src[i]
+		dir := path.Dir(fn)
 		base := path.Base(fn)
 		if ext := path.Ext(base); len(ext) > 0 {
 			base = base[:len(base)-len(ext)]
@@ -65,20 +66,39 @@ func main() {
 			continue
 		}
 		l, r := base[:sp], base[sp+1:]
+		rfn := dir + "/" + r + "_" + l + ".txt"
 		rl.reset()
 		switch {
-		case l == "English":
-			rl.lng = r
-			rev = true
 		case r == "English":
 			rl.lng = l
-			rev = false
+		case l == "English":
+			fallthrough
 		default:
 			continue
 		}
 		log.Printf("processing '%s' ...\n", fn)
-		if err := scan(rl, rr, fn, rev); err != nil {
+		if err := scan(rl, rr, fn, false); err != nil {
+			log.Printf("error: %s\n", err.Error())
+			continue
+		}
+		_, err := os.Stat(rfn)
+		if os.IsNotExist(err) {
+			continue
+		}
+		log.Printf("processing '%s' ...\n", rfn)
+		if err := scan(rl, rr, rfn, true); err != nil {
 			log.Printf("error: %s\n", err.Error())
 		}
+
+		if err := rl.flush(fdst + "/" + l + ".txt"); err != nil {
+			log.Printf("error: %s\n", err.Error())
+			continue
+		}
 	}
+
+	if err := rr.flush(fdst + "/Engligh.txt"); err != nil {
+		log.Printf("error: %s\n", err.Error())
+	}
+
+	log.Println("done")
 }
