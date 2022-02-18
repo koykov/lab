@@ -2,12 +2,17 @@ package main
 
 import (
 	"os"
+	"regexp"
 	"sort"
 
 	"github.com/koykov/bytealg"
 	"github.com/koykov/entry"
 	"github.com/koykov/fastconv"
 	"github.com/koykov/hash"
+)
+
+var (
+	sdRe = regexp.MustCompile("^[0-9$]+")
 )
 
 type repo struct {
@@ -34,6 +39,9 @@ func (r *repo) add(p []byte) {
 	r.bufB = bytealg.AppendSplit(r.bufB[:0], p, bSep, -1)
 	for i := 0; i < len(r.bufB); i++ {
 		b := bytealg.Trim(r.bufB[i], bTrim)
+		if sdRe.Match(b) {
+			continue
+		}
 		if len(b) == 0 {
 			continue
 		}
