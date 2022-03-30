@@ -13,12 +13,16 @@ type T struct {
 
 type O struct {
 	Flag bool
-	Ins  inspector.Inspector
+	DEQ  DEQ
+}
+
+type DEQ interface {
+	DeepEqual(l, r interface{}) bool
 }
 
 func (t *T) F(s string, o O) {
 	t.r = s
-	o.Ins.DeepEqual(&t.l, &t.r)
+	o.DEQ.DeepEqual(&t.l, &t.r)
 	t.buf = append(t.buf, s...)
 }
 
@@ -31,7 +35,7 @@ func BenchmarkCallWithOptions(b *testing.B) {
 	s := "foobar"
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		t.F(s, O{Ins: &inspector.StaticInspector{}})
+		t.F(s, O{DEQ: &inspector.StaticInspector{}})
 		t.reset()
 	}
 }
