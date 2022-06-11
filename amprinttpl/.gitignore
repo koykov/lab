@@ -1,4 +1,5 @@
 .idea
 bin/*.exe
 local/*.csv
+local/*.html
 out/*.docx
