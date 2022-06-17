@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div>{SERIA}</div>
+	<div>{NUMBER}</div>
+	<div>{DATE_DAY}</div>
+	<div>{DATE_MONTH}</div>
+	<div>{DATE_YEAR}</div>
+	<div>{CAR_MODEL}</div>
+	<div>{CAR_NUMBER}</div>
+	<div>{DRIVER_NAME}</div>
+</body>
+</html>
