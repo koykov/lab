@@ -9,3 +9,7 @@ func byteconv(x interface{}) ([]byte, bool) {
 	}
 	return nil, false
 }
+
+func byte2str(b byte) string {
+	return string(b)
+}

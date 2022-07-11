@@ -10,6 +10,7 @@ var (
 	ibytes    = interface{}(origin)
 	ibytesptr = interface{}(&origin)
 	ibytes8   = interface{}([]uint8(origin))
+	sbyte     = string(rune(56))
 )
 
 func TestByteconv(t *testing.T) {
@@ -31,4 +32,20 @@ func TestByteconv(t *testing.T) {
 			t.FailNow()
 		}
 	})
+	t.Run("single byte", func(t *testing.T) {
+		x := byte2str(56)
+		if x != sbyte {
+			t.FailNow()
+		}
+	})
+}
+
+func BenchmarkByteconv(b *testing.B) {
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		x := byte2str(56)
+		if x != sbyte {
+			b.FailNow()
+		}
+	}
 }
