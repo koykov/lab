@@ -41,11 +41,14 @@ func TestByteconv(t *testing.T) {
 }
 
 func BenchmarkByteconv(b *testing.B) {
+	var y string
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		x := byte2str(56)
 		if x != sbyte {
 			b.FailNow()
 		}
+		y = x
 	}
+	_ = y
 }
