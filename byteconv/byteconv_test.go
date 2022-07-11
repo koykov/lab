@@ -41,14 +41,28 @@ func TestByteconv(t *testing.T) {
 }
 
 func BenchmarkByteconv(b *testing.B) {
-	var y string
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		x := byte2str(56)
-		if x != sbyte {
-			b.FailNow()
+	b.Run("single byte", func(b *testing.B) {
+		var y string
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			x := byte2str(56)
+			if x != sbyte {
+				b.FailNow()
+			}
+			y = x
 		}
-		y = x
-	}
-	_ = y
+		_ = y
+	})
+	b.Run("single rune", func(b *testing.B) {
+		var y string
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			x := byte2str(56)
+			if x != sbyte {
+				b.FailNow()
+			}
+			y = x
+		}
+		_ = y
+	})
 }

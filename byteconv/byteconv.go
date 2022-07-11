@@ -13,3 +13,7 @@ func byteconv(x interface{}) ([]byte, bool) {
 func byte2str(b byte) string {
 	return string(b)
 }
+
+func rune2str(r rune) string {
+	return string(r)
+}
