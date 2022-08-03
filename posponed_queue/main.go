@@ -13,9 +13,13 @@ const (
 )
 
 type pq struct {
-	d  time.Duration
-	qt chan int64
-	qs chan any
+	d time.Duration
+	q chan item
+}
+
+type item struct {
+	ts int64
+	pl any
 }
 
 var (
@@ -24,32 +28,32 @@ var (
 )
 
 func (q *pq) enqueue(x any) {
-	q.qs <- x
 	t := time.Now()
-	q.qt <- t.UnixNano()
+	q.q <- item{
+		ts: t.UnixNano(),
+		pl: x,
+	}
 	fmt.Printf("enqueue %d at %s\n", x, t.Format(time.RFC3339Nano))
 }
 
 func (q *pq) do(fn func(any) error) {
 	for {
 		select {
-		case t := <-q.qt:
+		case itm := <-q.q:
 			un := time.Now().UnixNano()
-			if d := q.d - (time.Duration(un) - time.Duration(t)); d > 0 {
+			if d := q.d - (time.Duration(un) - time.Duration(itm.ts)); d > 0 {
 				fmt.Printf("wait %s\n", d)
 				time.Sleep(d)
 			}
-			x := <-q.qs
-			_ = fn(x)
+			_ = fn(itm.pl)
 		}
 	}
 }
 
 func init() {
 	qi = &pq{
-		d:  time.Second * 10,
-		qt: make(chan int64, size),
-		qs: make(chan any, size),
+		d: time.Second * 10,
+		q: make(chan item, size),
 	}
 }
 
