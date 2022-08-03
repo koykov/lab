@@ -40,7 +40,7 @@ func newq() *pq {
 func (q *pq) enqueue(x any) {
 	t := time.Now()
 	q.q <- item{
-		ts: t.UnixNano(),
+		ts: t.Add(q.d).UnixNano(),
 		pl: x,
 	}
 	fmt.Printf("enqueue %d at %s\n", x, t.Format(time.RFC3339Nano))
@@ -52,7 +52,7 @@ func (q *pq) do(wg *sync.WaitGroup, fn func(any) error) {
 		select {
 		case itm := <-q.q:
 			un := time.Now().UnixNano()
-			if d := q.d - (time.Duration(un) - time.Duration(itm.ts)); d > 0 {
+			if d := time.Duration(itm.ts - un); d > 0 {
 				fmt.Printf("wait %s\n", d)
 				time.Sleep(d)
 			}
