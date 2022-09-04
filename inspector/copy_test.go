@@ -40,10 +40,10 @@ func cpy(x *testobj.TestObject) *testobj.TestObject {
 	c.Cost = x.Cost
 	if x.Permission != nil && len(*x.Permission) > 0 {
 		x1 := make(testobj.TestPermission, len(*x.Permission))
-		c.Permission = &x1
 		for k, v := range *x.Permission {
-			(*c.Permission)[k] = v
+			x1[k] = v
 		}
+		c.Permission = &x1
 	}
 	if len(x.HistoryTree) > 0 {
 		c.HistoryTree = make(map[string]*testobj.TestHistory, len(x.HistoryTree))
@@ -60,12 +60,13 @@ func cpy(x *testobj.TestObject) *testobj.TestObject {
 		}
 	}
 	if len(x.Flags) > 0 {
-		c.Flags = make(testobj.TestFlag, len(x.Flags))
+		x1 := make(testobj.TestFlag, len(x.Flags))
 		for k, v := range x.Flags {
 			var k1 string
 			buf, k1 = bufferizeS(buf, k)
-			c.Flags[k1] = v
+			x1[k1] = v
 		}
+		c.Flags = x1
 	}
 	if x.Finance != nil {
 		c.Finance = &testobj.TestFinance{}
