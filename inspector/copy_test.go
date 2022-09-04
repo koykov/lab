@@ -127,14 +127,12 @@ func BenchmarkCopy(b *testing.B) {
 		},
 	}
 
-	// b.Run("inspect bytes", func(b *testing.B) {
-	// 	b.ReportAllocs()
-	// 	for i := 0; i < b.N; i++ {
-	// 		c := inspectBytes(origin)
-	// 		p := make([]byte, 0, c)
-	// 		_ = p
-	// 	}
-	// })
+	b.Run("inspect bytes", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			inspectBytes(origin)
+		}
+	})
 	b.Run("copy", func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
