@@ -3,8 +3,90 @@ package main
 import (
 	"testing"
 
+	"github.com/koykov/fastconv"
 	"github.com/koykov/inspector/testobj"
 )
+
+func inspectBytes(x *testobj.TestObject) (c int) {
+	c += len(x.Id)
+	c += len(x.Name)
+	for k := range x.Flags {
+		c += len(k)
+	}
+	for j := 0; j < len(x.Finance.History); j++ {
+		c += len(x.Finance.History[j].Comment)
+	}
+	return
+}
+func bufferize(buf, p []byte) ([]byte, []byte) {
+	off := len(buf)
+	buf = append(buf, p...)
+	return buf, buf[off:]
+}
+func bufferizeS(buf []byte, s string) ([]byte, string) {
+	off := len(buf)
+	buf = append(buf, s...)
+	return buf, fastconv.B2S(buf[off:])
+}
+func cpy(x *testobj.TestObject) *testobj.TestObject {
+	bc := inspectBytes(x)
+	buf := make([]byte, 0, bc)
+
+	var c testobj.TestObject
+	buf, c.Id = bufferizeS(buf, x.Id)
+	buf, c.Name = bufferize(buf, x.Name)
+	c.Status = x.Status
+	c.Ustate = x.Ustate
+	c.Cost = x.Cost
+	if x.Permission != nil && len(*x.Permission) > 0 {
+		x1 := make(testobj.TestPermission, len(*x.Permission))
+		c.Permission = &x1
+		for k, v := range *x.Permission {
+			(*c.Permission)[k] = v
+		}
+	}
+	if len(x.HistoryTree) > 0 {
+		c.HistoryTree = make(map[string]*testobj.TestHistory, len(x.HistoryTree))
+		for k, v := range x.HistoryTree {
+			x2 := testobj.TestHistory{}
+			if v != nil {
+				x2.DateUnix = v.DateUnix
+				x2.Cost = v.Cost
+				buf, x2.Comment = bufferize(buf, x2.Comment)
+			}
+			var k1 string
+			buf, k1 = bufferizeS(buf, k)
+			c.HistoryTree[k1] = &x2
+		}
+	}
+	if len(x.Flags) > 0 {
+		c.Flags = make(testobj.TestFlag, len(x.Flags))
+		for k, v := range x.Flags {
+			var k1 string
+			buf, k1 = bufferizeS(buf, k)
+			c.Flags[k1] = v
+		}
+	}
+	if x.Finance != nil {
+		c.Finance = &testobj.TestFinance{}
+		c.Finance.MoneyIn = x.Finance.MoneyIn
+		c.Finance.MoneyOut = x.Finance.MoneyOut
+		c.Finance.Balance = x.Finance.Balance
+		c.Finance.AllowBuy = x.Finance.AllowBuy
+		if len(x.Finance.History) > 0 {
+			c.Finance.History = make([]testobj.TestHistory, len(x.Finance.History))
+			for i := 0; i < len(x.Finance.History); i++ {
+				h := testobj.TestHistory{}
+				h.DateUnix = x.Finance.History[i].DateUnix
+				h.Cost = x.Finance.History[i].Cost
+				buf, h.Comment = bufferize(buf, x.Finance.History[i].Comment)
+				c.Finance.History[i] = h
+			}
+		}
+	}
+
+	return &c
+}
 
 func BenchmarkCopy(b *testing.B) {
 	origin := &testobj.TestObject{
@@ -44,24 +126,19 @@ func BenchmarkCopy(b *testing.B) {
 		},
 	}
 
-	inspectBytes := func(origin *testobj.TestObject) (c int) {
-		c += len(origin.Id)
-		c += len(origin.Name)
-		for k := range origin.Flags {
-			c += len(k)
-		}
-		for j := 0; j < len(origin.Finance.History); j++ {
-			c += len(origin.Finance.History[j].Comment)
-		}
-		return
-	}
-
-	b.Run("inspect bytes", func(b *testing.B) {
+	// b.Run("inspect bytes", func(b *testing.B) {
+	// 	b.ReportAllocs()
+	// 	for i := 0; i < b.N; i++ {
+	// 		c := inspectBytes(origin)
+	// 		p := make([]byte, 0, c)
+	// 		_ = p
+	// 	}
+	// })
+	b.Run("copy", func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
-			c := inspectBytes(origin)
-			p := make([]byte, 0, c)
-			_ = p
+			c := cpy(origin)
+			_ = c.Status
 		}
 	})
 }
