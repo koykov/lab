@@ -12,7 +12,7 @@ func main() {
 	x := pkg.X{New: func() any {
 		var x_ myX
 		x_ = 5
-		return x_
+		return &x_
 	}}
-	_ = x
+	_ = x.Do()
 }
