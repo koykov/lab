@@ -8,6 +8,11 @@ func BenchmarkFib(b *testing.B) {
 			_ = fib(30)
 		}
 	})
+	b.Run("fib one call", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = fibO(30)
+		}
+	})
 	b.Run("fib memoized", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			_ = fibm(30)
