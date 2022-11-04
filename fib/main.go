@@ -2,7 +2,7 @@ package main
 
 func main() {
 	for i := 1; i < 30; i++ {
-		println(fib(i), fibm(i))
+		println(fib(i), fibm(i), fibO(i))
 	}
 }
 
@@ -24,4 +24,21 @@ func fibm(n int) int {
 	}
 	mem[n] = fibm(n-1) + fibm(n-2)
 	return mem[n]
+}
+
+func fibO(n int) int {
+	_, x := fib2(n)
+	return x
+}
+
+func fib2(n int) (int, int) {
+	switch n {
+	case 0:
+		return 0, 1
+	case 1, 2:
+		return 1, 1
+	default:
+		prev, next := fib2(n - 1)
+		return next, prev + next
+	}
 }
