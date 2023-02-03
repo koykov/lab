@@ -96,7 +96,7 @@ func main() {
 		}
 	}
 
-	if err := rr.flush(fdst + "/Engligh.txt"); err != nil {
+	if err := rr.flush(fdst + "/English.txt"); err != nil {
 		log.Printf("error: %s\n", err.Error())
 	}
 
