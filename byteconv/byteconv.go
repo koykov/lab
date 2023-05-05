@@ -1,19 +1,30 @@
+//go:build go1.20
+// +build go1.20
+
 package byteconv
 
-func byteconv(x interface{}) ([]byte, bool) {
-	switch x.(type) {
-	case []byte:
-		return x.([]byte), true
-	case *[]byte:
-		return *x.(*[]byte), true
-	}
-	return nil, false
+import (
+	"reflect"
+	"unsafe"
+)
+
+func b2s(p []byte) string {
+	return *(*string)(unsafe.Pointer(&p))
 }
 
-func byte2str(b byte) string {
-	return string(b)
+func s2b(s string) []byte {
+	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
+	var h reflect.SliceHeader
+	h.Data = sh.Data
+	h.Len = sh.Len
+	h.Cap = sh.Len
+	return *(*[]byte)(unsafe.Pointer(&h))
 }
 
-func rune2str(r rune) string {
-	return string(r)
+func b2s1(p []byte) string {
+	return unsafe.String(unsafe.SliceData(p), len(p))
+}
+
+func s2b1(s string) []byte {
+	return unsafe.Slice(unsafe.StringData(s), len(s))
 }

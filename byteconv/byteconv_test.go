@@ -6,63 +6,45 @@ import (
 )
 
 var (
-	origin    = []byte("foobar")
-	ibytes    = interface{}(origin)
-	ibytesptr = interface{}(&origin)
-	ibytes8   = interface{}([]uint8(origin))
-	sbyte     = string(rune(56))
+	s = "foobar"
+	p = []byte("foobar")
 )
 
-func TestByteconv(t *testing.T) {
-	t.Run("bytes", func(t *testing.T) {
-		x, _ := byteconv(ibytes)
-		if !bytes.Equal(x, origin) {
-			t.FailNow()
-		}
-	})
-	t.Run("bytesptr", func(t *testing.T) {
-		x, _ := byteconv(ibytesptr)
-		if !bytes.Equal(x, origin) {
-			t.FailNow()
-		}
-	})
-	t.Run("uint8", func(t *testing.T) {
-		x, _ := byteconv(ibytes8)
-		if !bytes.Equal(x, origin) {
-			t.FailNow()
-		}
-	})
-	t.Run("single byte", func(t *testing.T) {
-		x := byte2str(56)
-		if x != sbyte {
-			t.FailNow()
-		}
-	})
-}
-
 func BenchmarkByteconv(b *testing.B) {
-	b.Run("single byte", func(b *testing.B) {
-		var y string
+	b.Run("b2s/old", func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
-			x := byte2str(56)
-			if x != sbyte {
+			x := b2s(p)
+			if x != s {
 				b.FailNow()
 			}
-			y = x
 		}
-		_ = y
 	})
-	b.Run("single rune", func(b *testing.B) {
-		var y string
+	b.Run("b2s/new", func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
-			x := byte2str(56)
-			if x != sbyte {
+			x := b2s1(p)
+			if x != s {
 				b.FailNow()
 			}
-			y = x
 		}
-		_ = y
+	})
+	b.Run("s2b/old", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			x := s2b(s)
+			if !bytes.Equal(x, p) {
+				b.FailNow()
+			}
+		}
+	})
+	b.Run("s2b/new", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			x := s2b1(s)
+			if !bytes.Equal(x, p) {
+				b.FailNow()
+			}
+		}
 	})
 }
