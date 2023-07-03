@@ -33,6 +33,21 @@ func BenchmarkClosureAlloc(b *testing.B) {
 			}
 		}
 	})
+	b.Run("simple 2", func(b *testing.B) {
+		b.ReportAllocs()
+		ctx := ctx{}
+		for i := 0; i < b.N; i++ {
+			var c, d int
+			ctx.add(func() {
+				c++
+				d++
+			})
+			ctx.bulkExec()
+			if c != 1 {
+				b.FailNow()
+			}
+		}
+	})
 	b.Run("prealloc external var", func(b *testing.B) {
 		b.ReportAllocs()
 		ctx := ctx{}
