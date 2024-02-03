@@ -1,21 +1,29 @@
 package loop_opt
 
-import "testing"
-
-func BenchmarkLoop(b *testing.B) {
-	a := 0
-	for i := 0; i < b.N; i++ {
-		a = floop(5)
-	}
-	_ = a
-}
+import (
+	"fmt"
+	"testing"
+)
 
 func BenchmarkGoto(b *testing.B) {
-	a := 0
-	for i := 0; i < b.N; i++ {
-		a = fgoto(5)
+	sizes := []int{10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000}
+	for i := 0; i < len(sizes); i++ {
+		size := sizes[i]
+		b.Run(fmt.Sprintf("loop/%d", size), func(b *testing.B) {
+			var x int
+			for j := 0; j < b.N; j++ {
+				x = floop(size)
+			}
+			_ = x
+		})
+		b.Run(fmt.Sprintf("goto/%d", size), func(b *testing.B) {
+			var x int
+			for j := 0; j < b.N; j++ {
+				x = fgoto(size)
+			}
+			_ = x
+		})
 	}
-	_ = a
 }
 
 func floop(size int) int {
