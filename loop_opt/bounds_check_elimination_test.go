@@ -1,36 +1,42 @@
 package loop_opt
 
-import "testing"
-
-const limit = 1e3
-
-var (
-	a = make([]int32, limit)
+import (
+	"fmt"
+	"testing"
 )
 
-func init() {
-	for i := 0; i < limit; i++ {
-		a[i] = int32(i)
+func BenchmarkBoundsCheckElimination(b *testing.B) {
+	stages := [][]int{
+		make([]int, 10),
+		make([]int, 100),
+		make([]int, 1000),
+		make([]int, 10000),
+		make([]int, 100000),
+		make([]int, 1000000),
+		make([]int, 10000000),
+		make([]int, 100000000),
+		make([]int, 1000000000),
 	}
-}
-
-func BenchmarkLoopBoundsCheckOn(b *testing.B) {
-	b.ResetTimer()
-	var x int32
-	for i := 0; i < b.N; i++ {
-		for j := 0; j < limit; j++ {
-			x += a[j]
-		}
-	}
-}
-
-func BenchmarkLoopBoundsCheckOff(b *testing.B) {
-	b.ResetTimer()
-	var x int32
-	for i := 0; i < b.N; i++ {
-		_ = a[limit-1]
-		for j := 0; j < limit; j++ {
-			x += a[j]
-		}
+	for i := 0; i < len(stages); i++ {
+		stage := stages[i]
+		b.Run(fmt.Sprintf("on/%d", len(stage)), func(b *testing.B) {
+			for j := 0; j < b.N; j++ {
+				var x int
+				_ = stage[len(stage)-1]
+				for k := 0; k < len(stage); k++ {
+					x += stage[k]
+				}
+				_ = x
+			}
+		})
+		b.Run(fmt.Sprintf("off/%d", len(stage)), func(b *testing.B) {
+			for j := 0; j < b.N; j++ {
+				var x int
+				for k := 0; k < len(stage); k++ {
+					x += stage[k]
+				}
+				_ = x
+			}
+		})
 	}
 }
