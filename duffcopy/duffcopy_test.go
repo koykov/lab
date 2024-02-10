@@ -2,6 +2,26 @@ package duffcopy
 
 import "testing"
 
+func TestDuffcopy(t *testing.T) {
+	t.Run("bce unsafe", func(t *testing.T) {
+		var s storage
+		i, n := s.getNodeBCE()
+
+		for j := 0; j < 10; j++ {
+			k, m := s.getNodeBCE()
+			m.typ = 10
+			m.key.Len = 100
+			s.putNodeUnsafe(k, m)
+		}
+		n.typ, n.limit = 15, 1
+
+		s.putNodeUnsafe(i, n)
+		if s.nodes[0].typ != 15 || s.nodes[i].limit != 1 {
+			t.Fail()
+		}
+	})
+}
+
 func BenchmarkDuffcopy(b *testing.B) {
 	b.Run("native", func(b *testing.B) {
 		b.ReportAllocs()
