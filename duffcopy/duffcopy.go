@@ -54,17 +54,16 @@ func (s *storage) putNode(i int, n *node) {
 }
 
 func (s *storage) putNodeUnsafe(i int, n *node) {
-	h := *(*reflect.SliceHeader)(unsafe.Pointer(&s.nodes))
-	hr := reflect.SliceHeader{Data: h.Data, Len: h.Len * nodeSZ, Cap: h.Cap * nodeSZ}
-	raw := *(*[]byte)(unsafe.Pointer(&hr))
-	_ = raw
+	lh := *(*reflect.SliceHeader)(unsafe.Pointer(&s.nodes))
+	lhb := reflect.SliceHeader{Data: lh.Data, Len: lh.Len * nodeSZ, Cap: lh.Cap * nodeSZ}
+	lb := *(*[]byte)(unsafe.Pointer(&lhb))
 	off := i * nodeSZ
 
-	nr := uintptr(unsafe.Pointer(n))
-	nh := reflect.SliceHeader{Data: nr, Len: nodeSZ, Cap: nodeSZ}
-	nb := *(*[]byte)(unsafe.Pointer(&nh))
+	rp := uintptr(unsafe.Pointer(n))
+	rh := reflect.SliceHeader{Data: rp, Len: nodeSZ, Cap: nodeSZ}
+	rb := *(*[]byte)(unsafe.Pointer(&rh))
 
-	copy(raw[off:off+nodeSZ], nb)
+	copy(lb[off:off+nodeSZ], rb)
 }
 
 func (s *storage) reset() { s.ln = 0 }
