@@ -15,4 +15,16 @@ func BenchmarkDuffcopy(b *testing.B) {
 			s.reset()
 		}
 	})
+	b.Run("bce unsafe", func(b *testing.B) {
+		b.ReportAllocs()
+		var s storage
+		for i := 0; i < b.N; i++ {
+			for j := 0; j < 100; j++ {
+				k, n := s.getNodeBCE()
+				n.typ = 15
+				s.putNodeUnsafe(k, n)
+			}
+			s.reset()
+		}
+	})
 }
