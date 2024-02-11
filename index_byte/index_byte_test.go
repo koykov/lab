@@ -48,7 +48,7 @@ func TestIndexByte(t *testing.T) {
 }
 
 func BenchmarkIndexByte(b *testing.B) {
-	d := 50
+	d := 1
 	for i := 0; i < len(stages); i += d {
 		off := i
 		b.Run(fmt.Sprintf("native %d", i), func(b *testing.B) {
@@ -66,6 +66,10 @@ func BenchmarkIndexByte(b *testing.B) {
 			}
 		})
 		switch {
+		case i >= 10 && i < 50:
+			d = 10
+		case i >= 100 && i < 500:
+			d = 50
 		case i >= 500 && i < 1000:
 			d = 100
 		case i >= 1000 && i < 5000:
