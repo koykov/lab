@@ -3,7 +3,7 @@ module github.com/koykov/lab/stranymap_ins_tpl
 go 1.20
 
 require (
-	github.com/koykov/dyntpl v1.1.6-0.20231004203229-75119867e370
+	github.com/koykov/dyntpl v1.1.6
 	github.com/koykov/inspector v1.4.4
 )
 
