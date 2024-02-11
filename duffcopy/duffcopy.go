@@ -54,6 +54,13 @@ func (s *storage) putNode(i int, n *node) {
 }
 
 func (s *storage) putNodeUnsafe(i int, n *node) {
+	l, r := unsafe.Pointer(&s.nodes[i]), unsafe.Pointer(n)
+	if uintptr(l) != uintptr(r) {
+		s.nodes[i] = *n
+	}
+}
+
+func (s *storage) putNodeUnsafe1(i int, n *node) {
 	lh := *(*reflect.SliceHeader)(unsafe.Pointer(&s.nodes))
 	lhb := reflect.SliceHeader{Data: lh.Data, Len: lh.Len * nodeSZ, Cap: lh.Cap * nodeSZ}
 	lb := *(*[]byte)(unsafe.Pointer(&lhb))
@@ -66,7 +73,7 @@ func (s *storage) putNodeUnsafe(i int, n *node) {
 	copy(lb[off:off+nodeSZ], rb)
 }
 
-func (s *storage) putNodeUnsafe1(i int, n *node) {
+func (s *storage) putNodeUnsafe2(i int, n *node) {
 	rp := uintptr(unsafe.Pointer(n))
 	rh := reflect.SliceHeader{Data: rp, Len: nodeSZ, Cap: nodeSZ}
 	rb := *(*[]byte)(unsafe.Pointer(&rh))
