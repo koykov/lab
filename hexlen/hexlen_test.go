@@ -14,7 +14,9 @@ func BenchmarkHexLen(b *testing.B) {
 		var buf []byte
 		for i := 0; i < b.N; i++ {
 			buf = strconv.AppendInt(buf[:0], n, 16)
-			// len(buf) == 5
+			if len(buf) != 5 {
+				b.FailNow()
+			}
 		}
 	})
 	b.Run("logN", func(b *testing.B) {
@@ -22,8 +24,9 @@ func BenchmarkHexLen(b *testing.B) {
 		ln16 := math.Log(16)
 		for i := 0; i < b.N; i++ {
 			l := math.Ceil(math.Log(n) / ln16)
-			_ = l
-			// int(l) == 5
+			if l != 5 {
+				b.FailNow()
+			}
 		}
 	})
 }
