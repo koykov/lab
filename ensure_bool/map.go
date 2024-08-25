@@ -3,25 +3,25 @@ package ensure_bool
 import "github.com/koykov/byteconv"
 
 func ensureTrueMap(src []byte, offset int) bool {
-	b1 := src[offset : offset+1]
-	b2 := src[offset : offset+2]
-	b3 := src[offset : offset+3]
-	b4 := src[offset : offset+4]
-	return mapBoolTrue[byteconv.B2S(b1)] ||
-		mapBoolTrue[byteconv.B2S(b2)] ||
-		mapBoolTrue[byteconv.B2S(b3)] ||
-		mapBoolTrue[byteconv.B2S(b4)]
+	b1 := byteconv.B2S(src[offset : offset+1])
+	b2 := byteconv.B2S(src[offset : offset+2])
+	b3 := byteconv.B2S(src[offset : offset+3])
+	b4 := byteconv.B2S(src[offset : offset+4])
+	return mapBoolTrue[b1] ||
+		mapBoolTrue[b2] ||
+		mapBoolTrue[b3] ||
+		mapBoolTrue[b4]
 }
 
 func ensureFalseMap(src []byte, offset int) bool {
-	b1 := src[offset : offset+1]
-	b2 := src[offset : offset+2]
-	b3 := src[offset : offset+3]
-	b5 := src[offset : offset+4]
-	return mapBoolFalse[byteconv.B2S(b1)] ||
-		mapBoolFalse[byteconv.B2S(b2)] ||
-		mapBoolFalse[byteconv.B2S(b3)] ||
-		mapBoolFalse[byteconv.B2S(b5)]
+	b1 := byteconv.B2S(src[offset : offset+1])
+	b2 := byteconv.B2S(src[offset : offset+2])
+	b3 := byteconv.B2S(src[offset : offset+3])
+	b5 := byteconv.B2S(src[offset : offset+4])
+	return mapBoolFalse[b1] ||
+		mapBoolFalse[b2] ||
+		mapBoolFalse[b3] ||
+		mapBoolFalse[b5]
 }
 
 var (
