@@ -29,4 +29,16 @@ func BenchmarkEnsureBool(b *testing.B) {
 			_ = ensureFalseMap(exampleFalse, 4)
 		}
 	})
+	b.Run("equal/true", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			_ = ensureFalseEqual(exampleTrue, 4)
+		}
+	})
+	b.Run("equal/false", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			_ = ensureFalseEqual(exampleFalse, 4)
+		}
+	})
 }
