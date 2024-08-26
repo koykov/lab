@@ -8,13 +8,25 @@ func BenchmarkEnsureBool(b *testing.B) {
 	b.Run("bin/true", func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
-			_ = ensureTrueBin(exampleTrue, 4)
+			_ = ensureTrueBin(exampleTrue, 4, binSafe)
 		}
 	})
 	b.Run("bin/false", func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
-			_ = ensureFalseBin(exampleFalse, 4)
+			_ = ensureFalseBin(exampleFalse, 4, binSafe)
+		}
+	})
+	b.Run("bin unsafe/true", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			_ = ensureTrueBin(exampleTrue, 4, binUnsafe)
+		}
+	})
+	b.Run("bin unsafe/false", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			_ = ensureFalseBin(exampleFalse, 4, binUnsafe)
 		}
 	})
 	b.Run("map/true", func(b *testing.B) {

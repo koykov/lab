@@ -1,10 +1,12 @@
 package ensure_bool
 
-func ensureTrueBin(src []byte, offset int) bool {
-	bin1 := bin(src, offset, 1)
-	bin2 := bin(src, offset, 1)
-	bin3 := bin(src, offset, 1)
-	bin4 := bin(src, offset, 1)
+import "unsafe"
+
+func ensureTrueBin(src []byte, offset int, binFn func(src []byte, offset, size int) uint64) bool {
+	bin1 := binFn(src, offset, 1)
+	bin2 := binFn(src, offset, 1)
+	bin3 := binFn(src, offset, 1)
+	bin4 := binFn(src, offset, 1)
 	_ = binBoolTrue[10]
 	return bin1 == binBoolTrue[0] ||
 		bin1 == binBoolTrue[1] ||
@@ -19,11 +21,11 @@ func ensureTrueBin(src []byte, offset int) bool {
 		bin4 == binBoolTrue[10]
 }
 
-func ensureFalseBin(src []byte, offset int) bool {
-	bin1 := bin(src, offset, 1)
-	bin2 := bin(src, offset, 1)
-	bin3 := bin(src, offset, 1)
-	bin5 := bin(src, offset, 1)
+func ensureFalseBin(src []byte, offset int, binFn func(src []byte, offset, size int) uint64) bool {
+	bin1 := binFn(src, offset, 1)
+	bin2 := binFn(src, offset, 1)
+	bin3 := binFn(src, offset, 1)
+	bin5 := binFn(src, offset, 1)
 	_ = binBoolFalse[10]
 	return bin1 == binBoolFalse[0] ||
 		bin1 == binBoolFalse[1] ||
@@ -38,7 +40,7 @@ func ensureFalseBin(src []byte, offset int) bool {
 		bin5 == binBoolFalse[10]
 }
 
-func bin(src []byte, offset, size int) uint64 {
+func binSafe(src []byte, offset, size int) uint64 {
 	n := len(src)
 	if offset+size >= n {
 		return 0
@@ -95,6 +97,17 @@ func bin(src []byte, offset, size int) uint64 {
 	}
 }
 
+func binUnsafe(src []byte, offset, size int) uint64 {
+	n := len(src)
+	if offset+size >= n {
+		return 0
+	}
+	_ = src[n-1]
+	binSrc := src[offset : offset+size]
+	u := *(*uint64)(unsafe.Pointer(&binSrc[0]))
+	return u >> (8 - size) << (8 - size)
+}
+
 var (
 	bBoolTrue = [11][]byte{
 		[]byte("y"),
@@ -128,9 +141,9 @@ var (
 
 func init() {
 	for i := 0; i < len(bBoolTrue); i++ {
-		binBoolTrue[i] = bin(bBoolTrue[i], 0, len(bBoolTrue[i]))
+		binBoolTrue[i] = binSafe(bBoolTrue[i], 0, len(bBoolTrue[i]))
 	}
 	for i := 0; i < len(bBoolFalse); i++ {
-		binBoolFalse[i] = bin(bBoolFalse[i], 0, len(bBoolFalse[i]))
+		binBoolFalse[i] = binSafe(bBoolFalse[i], 0, len(bBoolFalse[i]))
 	}
 }
