@@ -1,7 +1,5 @@
 package ensure_bool
 
-import "unsafe"
-
 func ensureTrueBin(src []byte, offset int) bool {
 	bin1 := bin(src, offset, 1)
 	bin2 := bin(src, offset, 1)
@@ -46,9 +44,55 @@ func bin(src []byte, offset, size int) uint64 {
 		return 0
 	}
 	_ = src[n-1]
-	binSrc := src[offset : offset+size]
-	bin := *(*uint64)(unsafe.Pointer(&binSrc[0]))
-	return bin
+
+	switch size {
+	case 1:
+		return uint64(src[offset])
+	case 2:
+		return uint64(src[offset+0]) |
+			uint64(src[offset+1])<<8
+	case 3:
+		return uint64(src[offset+0]) |
+			uint64(src[offset+1])<<8 |
+			uint64(src[offset+2])<<16
+	case 4:
+		return uint64(src[offset+0]) |
+			uint64(src[offset+1])<<8 |
+			uint64(src[offset+2])<<16 |
+			uint64(src[offset+3])<<24
+	case 5:
+		return uint64(src[offset+0]) |
+			uint64(src[offset+1])<<8 |
+			uint64(src[offset+2])<<16 |
+			uint64(src[offset+3])<<24 |
+			uint64(src[offset+4])<<32
+	case 6:
+		return uint64(src[offset+0]) |
+			uint64(src[offset+1])<<8 |
+			uint64(src[offset+2])<<16 |
+			uint64(src[offset+3])<<24 |
+			uint64(src[offset+4])<<32 |
+			uint64(src[offset+5])<<40
+	case 7:
+		return uint64(src[offset+0]) |
+			uint64(src[offset+1])<<8 |
+			uint64(src[offset+2])<<16 |
+			uint64(src[offset+3])<<24 |
+			uint64(src[offset+4])<<32 |
+			uint64(src[offset+5])<<40 |
+			uint64(src[offset+6])<<48
+	case 8:
+		return uint64(src[offset+0]) |
+			uint64(src[offset+1])<<8 |
+			uint64(src[offset+2])<<16 |
+			uint64(src[offset+3])<<24 |
+			uint64(src[offset+4])<<32 |
+			uint64(src[offset+5])<<40 |
+			uint64(src[offset+6])<<48 |
+			uint64(src[offset+7])<<56
+	default:
+		return 0
+	}
 }
 
 var (
@@ -84,9 +128,9 @@ var (
 
 func init() {
 	for i := 0; i < len(bBoolTrue); i++ {
-		binBoolTrue[i] = *(*uint64)(unsafe.Pointer(&bBoolTrue[i][0]))
+		binBoolTrue[i] = bin(bBoolTrue[i], 0, len(bBoolTrue[i]))
 	}
 	for i := 0; i < len(bBoolFalse); i++ {
-		binBoolFalse[i] = *(*uint64)(unsafe.Pointer(&bBoolFalse[i][0]))
+		binBoolFalse[i] = bin(bBoolFalse[i], 0, len(bBoolFalse[i]))
 	}
 }
