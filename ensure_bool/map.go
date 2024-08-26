@@ -17,7 +17,7 @@ func ensureFalseMap(src []byte, offset int) bool {
 	b1 := byteconv.B2S(src[offset : offset+1])
 	b2 := byteconv.B2S(src[offset : offset+2])
 	b3 := byteconv.B2S(src[offset : offset+3])
-	b5 := byteconv.B2S(src[offset : offset+4])
+	b5 := byteconv.B2S(src[offset : offset+5])
 	return mapBoolFalse[b1] ||
 		mapBoolFalse[b2] ||
 		mapBoolFalse[b3] ||

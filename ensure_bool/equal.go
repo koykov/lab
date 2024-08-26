@@ -26,7 +26,7 @@ func ensureFalseEqual(src []byte, offset int) bool {
 	b1 := src[offset : offset+1]
 	b2 := src[offset : offset+2]
 	b3 := src[offset : offset+3]
-	b5 := src[offset : offset+4]
+	b5 := src[offset : offset+5]
 	return bytes.Equal(b1, bBoolFalse[0]) ||
 		bytes.Equal(b1, bBoolFalse[1]) ||
 		bytes.Equal(b2, bBoolFalse[2]) ||

@@ -1,12 +1,14 @@
 package ensure_bool
 
-import "unsafe"
+import (
+	"unsafe"
+)
 
 func ensureTrueBin(src []byte, offset int, binFn func(src []byte, offset, size int) uint64) bool {
 	bin1 := binFn(src, offset, 1)
-	bin2 := binFn(src, offset, 1)
-	bin3 := binFn(src, offset, 1)
-	bin4 := binFn(src, offset, 1)
+	bin2 := binFn(src, offset, 2)
+	bin3 := binFn(src, offset, 3)
+	bin4 := binFn(src, offset, 4)
 	_ = binBoolTrue[10]
 	return bin1 == binBoolTrue[0] ||
 		bin1 == binBoolTrue[1] ||
@@ -23,9 +25,9 @@ func ensureTrueBin(src []byte, offset int, binFn func(src []byte, offset, size i
 
 func ensureFalseBin(src []byte, offset int, binFn func(src []byte, offset, size int) uint64) bool {
 	bin1 := binFn(src, offset, 1)
-	bin2 := binFn(src, offset, 1)
-	bin3 := binFn(src, offset, 1)
-	bin5 := binFn(src, offset, 1)
+	bin2 := binFn(src, offset, 2)
+	bin3 := binFn(src, offset, 3)
+	bin5 := binFn(src, offset, 5)
 	_ = binBoolFalse[10]
 	return bin1 == binBoolFalse[0] ||
 		bin1 == binBoolFalse[1] ||
@@ -42,7 +44,7 @@ func ensureFalseBin(src []byte, offset int, binFn func(src []byte, offset, size 
 
 func binSafe(src []byte, offset, size int) uint64 {
 	n := len(src)
-	if offset+size >= n {
+	if offset+size > n {
 		return 0
 	}
 	_ = src[n-1]
@@ -99,13 +101,18 @@ func binSafe(src []byte, offset, size int) uint64 {
 
 func binUnsafe(src []byte, offset, size int) uint64 {
 	n := len(src)
-	if offset+size >= n {
+	if offset+size > n {
 		return 0
 	}
 	_ = src[n-1]
 	binSrc := src[offset : offset+size]
 	u := *(*uint64)(unsafe.Pointer(&binSrc[0]))
-	return u >> (8 - size) << (8 - size)
+	d := 64 - size*8
+	// fmt.Printf("%64b\n", u)
+	// fmt.Printf("%64b\n", u<<d)
+	// fmt.Printf("%64b\n", u<<d>>d)
+	// println()
+	return u << d >> d
 }
 
 var (
