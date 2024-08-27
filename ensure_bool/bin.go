@@ -104,7 +104,6 @@ func binUnsafe(src []byte, offset, size int) uint64 {
 	if offset+size > n {
 		return 0
 	}
-	_, _ = src[n-1], binSizeMasks[7]
 	binSrc := src[offset : offset+size]
 	u := *(*uint64)(unsafe.Pointer(&binSrc[0]))
 	return u & binSizeMasks[size-1]
