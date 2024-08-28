@@ -37,3 +37,12 @@ func ensureFalseEqual(src []byte, offset int) bool {
 		bytes.Equal(b5, bBoolFalse[9]) ||
 		bytes.Equal(b5, bBoolFalse[10])
 }
+
+func ensureNullEqual(src []byte, offset int) bool {
+	b1 := src[offset : offset+1]
+	b4 := src[offset : offset+4]
+	return bytes.Equal(b1, bNull[0]) ||
+		bytes.Equal(b4, bNull[1]) ||
+		bytes.Equal(b4, bNull[2]) ||
+		bytes.Equal(b4, bNull[3])
+}

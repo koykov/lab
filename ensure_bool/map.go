@@ -24,6 +24,12 @@ func ensureFalseMap(src []byte, offset int) bool {
 		mapBoolFalse[b5]
 }
 
+func ensureNullMap(src []byte, offset int) bool {
+	b1 := byteconv.B2S(src[offset : offset+1])
+	b4 := byteconv.B2S(src[offset : offset+4])
+	return mapNull[b1] || mapNull[b4]
+}
+
 var (
 	mapBoolTrue = map[string]bool{
 		"y":    true,
@@ -50,5 +56,11 @@ var (
 		"false": true,
 		"False": true,
 		"FALSE": true,
+	}
+	mapNull = map[string]bool{
+		"~":    true,
+		"null": true,
+		"None": true,
+		"NONE": true,
 	}
 )

@@ -40,6 +40,16 @@ func ensureFalseBin(src []byte, offset int, binFn func(src []byte, offset, size 
 		bin5 == binBoolFalse[10]
 }
 
+func ensureNullBin(src []byte, offset int, binFn func(src []byte, offset, size int) uint64) bool {
+	bin1 := binFn(src, offset, 1)
+	bin4 := binFn(src, offset, 4)
+	_ = binNull[3]
+	return bin1 == binNull[0] ||
+		bin4 == binNull[1] ||
+		bin4 == binNull[2] ||
+		bin4 == binNull[3]
+}
+
 func binSafe(src []byte, offset, size int) uint64 {
 	n := len(src)
 	if offset+size > n {
@@ -121,7 +131,7 @@ var (
 		[]byte("True"),
 		[]byte("TRUE"),
 	}
-	binBoolTrue = [11]uint64{}
+	binBoolTrue [11]uint64
 	bBoolFalse  = [11][]byte{
 		[]byte("n"),
 		[]byte("N"),
@@ -135,7 +145,15 @@ var (
 		[]byte("False"),
 		[]byte("FALSE"),
 	}
-	binBoolFalse = [11]uint64{}
+	binBoolFalse [11]uint64
+
+	bNull = [4][]byte{
+		[]byte("~"),
+		[]byte("null"),
+		[]byte("None"),
+		[]byte("NONE"),
+	}
+	binNull [4]uint64
 
 	binSizeMasks = [8]uint64{
 		0x00000000000000FF,
@@ -155,5 +173,8 @@ func init() {
 	}
 	for i := 0; i < len(bBoolFalse); i++ {
 		binBoolFalse[i] = binSafe(bBoolFalse[i], 0, len(bBoolFalse[i]))
+	}
+	for i := 0; i < len(bNull); i++ {
+		binNull[i] = binSafe(bNull[i], 0, len(bNull[i]))
 	}
 }
