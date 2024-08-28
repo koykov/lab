@@ -1,8 +1,6 @@
 package ensure_bool
 
-import (
-	"bytes"
-)
+import "bytes"
 
 func ensureTrueEqual(src []byte, offset int) bool {
 	b1 := src[offset : offset+1]

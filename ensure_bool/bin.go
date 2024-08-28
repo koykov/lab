@@ -1,8 +1,6 @@
 package ensure_bool
 
-import (
-	"unsafe"
-)
+import "unsafe"
 
 func ensureTrueBin(src []byte, offset int, binFn func(src []byte, offset, size int) uint64) bool {
 	bin1 := binFn(src, offset, 1)
