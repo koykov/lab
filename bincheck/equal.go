@@ -1,4 +1,4 @@
-package ensure_bool
+package bincheck
 
 import "bytes"
 
