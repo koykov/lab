@@ -3,12 +3,27 @@ package bincheck
 import (
 	"testing"
 
+	"github.com/koykov/vector"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestEnsureBool(t *testing.T) {
 	exampleTrue := []byte("foo: True")
 	exampleFalse := []byte("foo: False")
+	var typ vector.Type
+	var bv bool
+	t.Run("token/true", func(t *testing.T) {
+		x := ensureNullOrBool(exampleTrue, 5, &typ, &bv)
+		assert.True(t, x)
+		assert.Equal(t, typ, vector.TypeBool)
+		assert.True(t, bv)
+	})
+	t.Run("token/false", func(t *testing.T) {
+		x := ensureNullOrBool(exampleFalse, 5, &typ, &bv)
+		assert.True(t, x)
+		assert.Equal(t, typ, vector.TypeBool)
+		assert.False(t, bv)
+	})
 	t.Run("bin/true", func(t *testing.T) {
 		x := ensureTrueBin(exampleTrue, 5, binSafe)
 		assert.True(t, x)
@@ -45,6 +60,13 @@ func TestEnsureBool(t *testing.T) {
 
 func TestEnsureNull(t *testing.T) {
 	example := []byte("foo: None")
+	var typ vector.Type
+	var bv bool
+	t.Run("token", func(t *testing.T) {
+		x := ensureNullOrBool(example, 5, &typ, &bv)
+		assert.True(t, x)
+		assert.Equal(t, typ, vector.TypeNull)
+	})
 	t.Run("bin", func(t *testing.T) {
 		x := ensureNullBin(example, 5, binSafe)
 		assert.True(t, x)
@@ -66,6 +88,20 @@ func TestEnsureNull(t *testing.T) {
 func BenchmarkEnsureBool(b *testing.B) {
 	exampleTrue := []byte("foo: True")
 	exampleFalse := []byte("foo: False")
+	var typ vector.Type
+	var bv bool
+	b.Run("token/true", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			_ = ensureNullOrBool(exampleTrue, 5, &typ, &bv)
+		}
+	})
+	b.Run("token/false", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			_ = ensureNullOrBool(exampleFalse, 5, &typ, &bv)
+		}
+	})
 	b.Run("bin/true", func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
@@ -118,6 +154,14 @@ func BenchmarkEnsureBool(b *testing.B) {
 
 func BenchmarkEnsureNull(b *testing.B) {
 	exampleTrue := []byte("foo: None")
+	var typ vector.Type
+	var bv bool
+	b.Run("token", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			_ = ensureNullOrBool(exampleTrue, 5, &typ, &bv)
+		}
+	})
 	b.Run("bin", func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {

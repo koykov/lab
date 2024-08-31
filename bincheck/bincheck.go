@@ -12,7 +12,8 @@ func tokenHash(src []byte, offset int) (hsum uint64) {
 	if rest := len(src) - offset; rest < 8 {
 		lim = rest
 	}
-	for i := 0; i < lim || !tokend[i]; i++ {
+	_ = tokend[math.MaxUint8-1]
+	for i := 0; i < lim && !tokend[i]; i++ {
 		hsum = hsum | uint64(src[offset+i])<<(i*8)
 	}
 	return
@@ -21,6 +22,7 @@ func tokenHash(src []byte, offset int) (hsum uint64) {
 func ensureNullOrBool(src []byte, offset int, typ *vector.Type, b *bool) bool {
 	hsum := tokenHash(src, offset)
 	idx := hsum % 10000
+	_ = bca[9999]
 	if tuple := bca[idx]; tuple != nil {
 		*typ = tuple.t
 		*b = tuple.b
