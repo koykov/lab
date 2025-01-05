@@ -47,10 +47,7 @@ func MercifulStalinSort[T cmp.Ordered](buf *BufMF[T], a []T) []T {
 		return r
 	}
 
-	if buf.n == nil {
-		buf.n = &BufMF[T]{}
-	}
-	rem := MercifulStalinSort[T](buf.n, rbw)
+	rem := MercifulStalinSort[T](buf.next(), rbw)
 	r1 = merge(r1, r, rem)
 	return r1
 }

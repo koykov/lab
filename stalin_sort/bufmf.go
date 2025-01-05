@@ -56,6 +56,13 @@ func (buf *BufMF[T]) r1() []T {
 	return buf.buf[lo:hi][:0]
 }
 
+func (buf *BufMF[T]) next() *BufMF[T] {
+	if buf.n == nil {
+		buf.n = &BufMF[T]{}
+	}
+	return buf.n
+}
+
 func (buf *BufMF[T]) Reset() {
 	buf.fw_.Reset()
 	buf.rfw_.Reset()
