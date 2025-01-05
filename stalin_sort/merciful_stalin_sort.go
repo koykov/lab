@@ -8,13 +8,13 @@ import (
 type BufMF[T cmp.Ordered] struct {
 	fw, rfw, bw, rbw, r, r1 []T
 
-	N *BufMF[T]
+	n *BufMF[T]
 }
 
 func (buf *BufMF[T]) Reset() {
 	buf.fw, buf.rfw, buf.bw, buf.rbw, buf.r, buf.r1 = buf.fw[:0], buf.rfw[:0], buf.bw[:0], buf.rbw[:0], buf.r[:0], buf.r1[:0]
-	if buf.N != nil {
-		buf.N.Reset()
+	if buf.n != nil {
+		buf.n.Reset()
 	}
 }
 
@@ -58,10 +58,10 @@ func MercifulStalinSort[T cmp.Ordered](buf *BufMF[T], a []T) []T {
 		return buf.r
 	}
 
-	if buf.N == nil {
-		buf.N = &BufMF[T]{}
+	if buf.n == nil {
+		buf.n = &BufMF[T]{}
 	}
-	rem := MercifulStalinSort[T](buf.N, buf.rbw)
+	rem := MercifulStalinSort[T](buf.n, buf.rbw)
 	buf.r1 = merge(buf.r1, buf.r, rem)
 	return buf.r1
 }
