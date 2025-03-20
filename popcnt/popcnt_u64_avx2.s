@@ -40,7 +40,7 @@ avx2_loop:
     // sum result to Y0
     VPADDQ Y4, Y0, Y0    // Y0 += Y4
 
-    // swith to next block
+    // switch to next block
     ADDQ $32, SI         // SI += 32 (4 64-bit numbers)
     SUBQ $4, CX          // CX -= 4
     CMPQ CX, $4
