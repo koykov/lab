@@ -17,6 +17,7 @@ var (
 		{0xFFFFFFFFFFFFFFFF, 64},
 		{0x0000000000000000, 0},
 		{0x5555555555555555, 32},
+		{0xAAAAAAAAAAAAAAAA, 32},
 	}
 	stagesBig = [][]byte{
 		make([]byte, 1e3),
@@ -31,8 +32,9 @@ var (
 	funcs = []func([]byte) uint64{
 		popcntScalar,
 		popcntU64,
-		popcntTable,
+		popcntU64SSE2,
 		popcntU64AVX2,
+		popcntU64AVX512,
 	}
 )
 
