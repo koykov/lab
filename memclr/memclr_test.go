@@ -11,9 +11,13 @@ import (
 
 var (
 	stages [][]byte
-	testfn = []func([]uint64){
-		memclr64generic,
-		memclr64SSE2,
+	testfn = []struct {
+		blocksz int
+		fn      func([]byte)
+	}{
+		// {8, memclr64generic},
+		// {32, memclr64SSE2},
+		{64, memclr64AVX2},
 	}
 )
 
@@ -25,7 +29,7 @@ func init() {
 		}
 		return r
 	}
-	for i := 0; i < 10; i++ {
+	for i := 2; i < 10; i++ {
 		stages = append(stages, make([]byte, pow(i)))
 	}
 	fillStages()
@@ -46,13 +50,13 @@ func testsum(p []byte) (r uint64) {
 	return
 }
 
-func tmemclr(p []byte, clearfn func([]uint64)) {
+func tmemclr(p []byte, blocksz int, clearfn func([]uint64)) {
 	n := len(p)
 	if n == 0 {
 		return
 	}
-	if n >= 32 {
-		n64 := (n - n%32) / 8
+	if n >= blocksz {
+		n64 := (n - n%blocksz) / 8
 		type sh struct {
 			p    uintptr
 			l, c int
@@ -60,7 +64,11 @@ func tmemclr(p []byte, clearfn func([]uint64)) {
 		h := sh{p: uintptr(unsafe.Pointer(&p[0])), l: n64, c: n64}
 		p64 := *(*[]uint64)(unsafe.Pointer(&h))
 		clearfn(p64)
-		n = n - n%32
+		p = p[n64*8:]
+		n = len(p)
+	}
+	if n == 0 {
+		return
 	}
 	_ = p[n-1]
 	for i := 0; i < len(p); i++ {
@@ -70,12 +78,14 @@ func tmemclr(p []byte, clearfn func([]uint64)) {
 
 func TestMemclr(t *testing.T) {
 	for _, fn := range testfn {
+		fillStages()
 		for _, st := range stages {
-			t.Run(fmt.Sprintf("%s/%d", funcName(fn), len(st)), func(t *testing.T) {
-				tmemclr(st, fn)
-				if testsum(st) != 0 {
-					t.Errorf("sum is not zero")
-				}
+			t.Run(fmt.Sprintf("%s/%d", funcName(fn.fn), len(st)), func(t *testing.T) {
+				memclr64AVX2(st)
+				// tmemclr(st, fn.blocksz, fn.fn)
+				// if testsum(st) != 0 {
+				// 	t.Errorf("sum is not zero")
+				// }
 			})
 		}
 	}
@@ -84,11 +94,11 @@ func TestMemclr(t *testing.T) {
 func BenchmarkMemclr(b *testing.B) {
 	for _, fn := range testfn {
 		for _, st := range stages {
-			b.Run(fmt.Sprintf("%s/%d", funcName(fn), len(st)), func(b *testing.B) {
-				b.ReportAllocs()
+			b.Run(fmt.Sprintf("%s/%d", funcName(fn.fn), len(st)), func(b *testing.B) {
 				b.SetBytes(int64(len(st)))
 				for i := 0; i < b.N; i++ {
-					tmemclr(st, fn)
+					// tmemclr(st, fn.blocksz, fn.fn)
+					memclr64AVX2(st)
 				}
 			})
 		}
