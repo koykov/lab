@@ -1,88 +1,114 @@
 #include "textflag.h"
 
 // func memclr64SSE2(p []uint64)
-TEXT ·memclr64SSE2(SB),NOSPLIT,$0
-    MOVQ    p_data+0(FP), DI        // point to slice start (SI = &data[0])
-    MOVQ    p_len+8(FP), CX         // slice len (CX = len(data))
+TEXT ·memclr64SSE2(SB),NOSPLIT,$0-24
+    MOVQ    p_data+0(FP), DI   // point to slice start (DI = &p[0])
+    MOVQ    p_len+8(FP), CX    // slice len (CX = len(p))
 
-    SHRQ    $2, CX                  // CX = unroll loop by 4
-    PXOR    X0, X0                  // init XMM0 with 128 zero bits
+    // process tail (0-3 items)
+    MOVQ    CX, BX
+    ANDQ    $3, BX             // BX = len % 4
+    JZ      block_processing   // goto main block processing
+
+    XORQ    AX, AX
+tail_loop:
+    MOVQ    AX, (DI)           // clear single item
+    ADDQ    $8, DI
+    DECQ    BX
+    JNZ     tail_loop
+
+    SUBQ    BX, CX             // reduce length
+
+block_processing:
+    // process 4 items per iteration
+    SHRQ    $2, CX             // CX = CX >> 2 (count of blocks)
+    JZ      done
+
+    PXOR    X0, X0             // fill up XMM0 with 128 zero bits (16 bytes)
 
 loop:
-    MOVUPS  X0, (DI)                // write lo 16 bytes (2 uint64 numbers) at once
-    MOVUPS  X0, 16(DI)              // write hi 16 bytes (4 uint64 per iteration in total)
-    ADDQ    $32, DI                 // switch to next 32 bytes
+    MOVUPS  X0, (DI)           // write 128 zero bits (16 bytes/2 items) to addr DI
+    MOVUPS  X0, 16(DI)         // write another 128 bits to DI with offset 16 (4 items in total)
+    ADDQ    $32, DI
     DECQ    CX
     JNZ     loop
 
+done:
     RET
 
-// func memclr64AVX2(p []byte)
-TEXT ·memclr64AVX2(SB),NOSPLIT,$0-24
-    MOVQ    p_data+0(FP), DI   // DI = pointer
-    MOVQ    p_len+8(FP), CX    // CX = length
+// func memclr64AVX2(p []uint64)
+TEXT ·memclr64AVX2(SB),NOSPLIT,$0
+    MOVQ    p_data+0(FP), DI   // point to slice start (DI = &p[0])
+    MOVQ    p_len+8(FP), CX    // slice len (CX = len(p))
 
-    // Fast path для маленьких блоков (<=128 байт)
-    CMPQ    CX, $128
-    JBE     small
-
-    // Выравнивание до 32 байт
-    MOVQ    DI, AX
-    ANDQ    $31, AX
-    JZ      aligned
-    MOVQ    $32, BX
-    SUBQ    AX, BX
-
-    XORQ    AX, AX
-align_loop:
-    MOVB    AX, (DI)
-    INCQ    DI
-    DECQ    CX
-    DECQ    BX
-    JNZ     align_loop
-
-aligned:
-    // Основной цикл с разверткой 4x
+    // process tail (0-7 items)
     MOVQ    CX, BX
-    SHRQ    $7, BX           // BX = количество 128-байтных блоков (4x32)
-    JZ      tail
+    ANDQ    $7, BX             // BX = len % 8
+    JZ      block_processing   // goto main block processing
 
-    VZEROUPPER
-    VPXOR   Y0, Y0, Y0
-    VPXOR   Y1, Y1, Y1      // Используем второй регистр для параллелизации
-
-avx_loop:
-    VMOVDQU Y0, 0(DI)       // Развертка 4x32 байта
-    VMOVDQU Y1, 32(DI)
-    VMOVDQU Y0, 64(DI)
-    VMOVDQU Y1, 96(DI)
-    ADDQ    $128, DI        // Уменьшаем количество ADDQ
-    DECQ    BX
-    JNZ     avx_loop
-
-    VZEROUPPER
-
-tail:
-    // Обработка остатка (0-127 байт)
-    ANDQ    $127, CX
-    JZ      done
-
-small:
-    // Оптимизированная очистка остатка
     XORQ    AX, AX
-    CMPQ    CX, $32
-    JB      very_small
+tail_loop:
+    MOVQ    AX, (DI)
+    ADDQ    $8, DI
+    DECQ    BX
+    JNZ     tail_loop
 
-    // Очистка 32-байтными блоками
-    VMOVDQU Y0, (DI)
-    ADDQ    $32, DI
-    SUBQ    $32, CX
-    JMP     small
+    SUBQ    BX, CX             // reduce length
 
-very_small:
-    TESTQ   CX, CX
+block_processing:
+    // process 4 items per iteration
+    SHRQ    $3, CX             // CX = CX >> 3 (count of blocks)
     JZ      done
-    MOVQ    AX, (DI)        // Очистка 8 байт за раз
-    MOVQ    AX, -8(DI)(CX*1)
+
+    VZEROUPPER                 // prepare AVX processing (clear hi bits of YMM)
+    VPXOR   Y0, Y0, Y0         // fill up YMM0 with 256 zero bits (16 bytes)
+
+block_loop:
+    VMOVDQU Y0, (DI)           // write 256 zero bits (32 bytes/4 items) to addr DI
+    VMOVDQU Y0, 32(DI)         // write another 256 bits to DI with offset 32 (8 items in total)
+    ADDQ    $64, DI
+    DECQ    CX
+    JNZ     block_loop
+
+    VZEROUPPER
+
+done:
+    RET
+
+// func memclr64AVX512(p []uint64)
+TEXT ·memclr64AVX512(SB),NOSPLIT,$0-24
+    MOVQ    p_data+0(FP), DI   // point to slice start (DI = &p[0])
+    MOVQ    p_len+8(FP), CX    // slice len (CX = len(p))
+
+    // process tail (0-7 items)
+    MOVQ    CX, BX
+    ANDQ    $7, BX             // BX = len % 8
+    JZ      block_processing   // goto main block processing
+
+    XORQ    AX, AX
+tail_loop:
+    MOVQ    AX, (DI)
+    ADDQ    $8, DI
+    DECQ    BX
+    JNZ     tail_loop
+
+    SUBQ    BX, CX             // reduce length
+
+block_processing:
+    // process 8 items per iteration
+    SHRQ    $3, CX             // CX = CX >> 3 (count of blocks)
+    JZ      done
+
+    //VZEROUPPER                 // prepare AVX processing (clear hi bits of ZMM)
+    VPXORQ  Z0, Z0, Z0         // fill up ZMM0 with 512 zero bits (16 bytes)
+
+avx512_loop:
+    VMOVDQU64 Z0, (DI)         // write 512 bits (64 bytes/8 items) at once to addr DI
+    ADDQ    $64, DI
+    DECQ    CX
+    JNZ     avx512_loop
+
+    //VZEROUPPER
+
 done:
     RET

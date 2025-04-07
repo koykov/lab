@@ -13,11 +13,12 @@ var (
 	stages [][]byte
 	testfn = []struct {
 		blocksz int
-		fn      func([]byte)
+		fn      func([]uint64)
 	}{
-		// {8, memclr64generic},
-		// {32, memclr64SSE2},
-		{64, memclr64AVX2},
+		{8, memclr64generic},
+		{32, memclr64SSE2},
+		{32, memclr64AVX2},
+		{32, memclr64AVX512},
 	}
 )
 
@@ -81,11 +82,11 @@ func TestMemclr(t *testing.T) {
 		fillStages()
 		for _, st := range stages {
 			t.Run(fmt.Sprintf("%s/%d", funcName(fn.fn), len(st)), func(t *testing.T) {
-				memclr64AVX2(st)
-				// tmemclr(st, fn.blocksz, fn.fn)
-				// if testsum(st) != 0 {
-				// 	t.Errorf("sum is not zero")
-				// }
+				tmemclr(st, fn.blocksz, fn.fn)
+				if testsum(st) != 0 {
+					t.Errorf("sum is not zero")
+					tmemclr(st, fn.blocksz, fn.fn)
+				}
 			})
 		}
 	}
@@ -97,8 +98,7 @@ func BenchmarkMemclr(b *testing.B) {
 			b.Run(fmt.Sprintf("%s/%d", funcName(fn.fn), len(st)), func(b *testing.B) {
 				b.SetBytes(int64(len(st)))
 				for i := 0; i < b.N; i++ {
-					// tmemclr(st, fn.blocksz, fn.fn)
-					memclr64AVX2(st)
+					tmemclr(st, fn.blocksz, fn.fn)
 				}
 			})
 		}
