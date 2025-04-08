@@ -10,7 +10,12 @@ import (
 )
 
 var (
-	stages [][]byte
+	stages   [][]byte
+	stages64 []struct {
+		buf64 []uint64
+		buf   []byte
+		sz    int64
+	}
 	testfn = []struct {
 		blocksz int
 		fn      func([]uint64)
@@ -31,7 +36,14 @@ func init() {
 		return r
 	}
 	for i := 2; i < 10; i++ {
-		stages = append(stages, make([]byte, pow(i)))
+		p := make([]byte, pow(i))
+		p64, p8 := tconv64(p)
+		stages = append(stages, p)
+		stages64 = append(stages64, struct {
+			buf64 []uint64
+			buf   []byte
+			sz    int64
+		}{p64, p8, int64(len(p))})
 	}
 	fillStages()
 }
@@ -48,6 +60,21 @@ func testsum(p []byte) (r uint64) {
 	for i := 0; i < len(p); i++ {
 		r += uint64(p[i])
 	}
+	return
+}
+
+func tconv64(p []byte) (p64 []uint64, p8 []byte) {
+	n := len(p)
+	if n == 0 {
+		return
+	}
+	n64 := (n - n%8) / 8
+	p64 = *(*[]uint64)(unsafe.Pointer(&reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(&p[0])),
+		Len:  n64,
+		Cap:  n64,
+	}))
+	p8 = p[n64*8:]
 	return
 }
 
@@ -77,6 +104,19 @@ func tmemclr(p []byte, blocksz int, clearfn func([]uint64)) {
 	}
 }
 
+func tmemclr64(p64 []uint64, p []byte, clearfn func([]uint64)) {
+	n64, n := len(p64), len(p)
+	if n64 > 0 {
+		clearfn(p64)
+	}
+	if n > 0 {
+		_ = p[n-1]
+		for i := 0; i < len(p); i++ {
+			p[i] = 0
+		}
+	}
+}
+
 func TestMemclr(t *testing.T) {
 	for _, fn := range testfn {
 		fillStages()
@@ -94,11 +134,11 @@ func TestMemclr(t *testing.T) {
 
 func BenchmarkMemclr(b *testing.B) {
 	for _, fn := range testfn {
-		for _, st := range stages {
-			b.Run(fmt.Sprintf("%s/%d", funcName(fn.fn), len(st)), func(b *testing.B) {
-				b.SetBytes(int64(len(st)))
+		for _, st := range stages64 {
+			b.Run(fmt.Sprintf("%s/%d", funcName(fn.fn), st.sz), func(b *testing.B) {
+				b.SetBytes(st.sz)
 				for i := 0; i < b.N; i++ {
-					tmemclr(st, fn.blocksz, fn.fn)
+					tmemclr64(st.buf64, st.buf, fn.fn)
 				}
 			})
 		}
