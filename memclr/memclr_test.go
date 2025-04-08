@@ -16,9 +16,9 @@ var (
 		fn      func([]uint64)
 	}{
 		{8, memclr64generic},
-		{32, memclr64SSE2},
-		{32, memclr64AVX2},
-		{32, memclr64AVX512},
+		{8, memclr64SSE2},
+		{8, memclr64AVX2},
+		{8, memclr64AVX512},
 	}
 )
 
@@ -102,6 +102,17 @@ func BenchmarkMemclr(b *testing.B) {
 				}
 			})
 		}
+	}
+}
+
+func BenchmarkMemclrNative(b *testing.B) {
+	for _, st := range stages {
+		b.Run(fmt.Sprintf("%s/%d", "native", len(st)), func(b *testing.B) {
+			b.SetBytes(int64(len(st)))
+			for i := 0; i < b.N; i++ {
+				Memclr(st)
+			}
+		})
 	}
 }
 
