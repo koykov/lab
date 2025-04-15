@@ -32,6 +32,13 @@ func TestSkipFmt4(t *testing.T) {
 				t.FailNow()
 			}
 		})
+		t.Run(fmt.Sprintf("SSE2/%d", i), func(t *testing.T) {
+			r, eof := skipFmt4SSE2(stg.s, len(stg.s), stg.off)
+			if r != stg.exp || eof != stg.eof {
+				skipFmt4SSE2(stg.s, len(stg.s), stg.off)
+				t.FailNow()
+			}
+		})
 	}
 }
 
