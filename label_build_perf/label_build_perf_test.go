@@ -12,9 +12,7 @@ import (
 func BenchmarkLabelBuild(b *testing.B) {
 	var reg = map[string]int{}
 	applyfn := func(label string) {
-		// reg[label]++
-		_ = reg
-		_ = label
+		reg[label]++
 	}
 	b.Run("sprintf", func(b *testing.B) {
 		b.ReportAllocs()
