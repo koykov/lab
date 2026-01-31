@@ -32,7 +32,6 @@ const (
 	TokenDirective // %YAML, %TAG
 )
 
-// Token представляет токен YAML
 type Token struct {
 	Type  TokenType
 	Value string
